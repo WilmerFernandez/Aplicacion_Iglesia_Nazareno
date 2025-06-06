@@ -150,7 +150,7 @@ public class SalidaServlet extends HttpServlet {
                 boolean registrado = salidaService.registrarSalida(salida);
 
                 if (registrado) {
-                    request.setAttribute("mensaje", "Salida registrada correctamente para el Ministerio ID: " + idMinisterioAsociado + ". Ingresos disponibles actuales: S/. " + String.format("%.2f", (ingresosDisponibles - montoSalida)));
+                    request.setAttribute("mensaje", "Salida registrada correctamente");
                 } else {
                     request.setAttribute("error", "No se pudo registrar la salida. La base de datos no confirmó la inserción.");
                 }

@@ -15,10 +15,12 @@ public class ReporteMinisteriosService {
 
     private OfrendaDAO ofrendaDAO;
     private SalidaDAO salidaDAO;
+    
 
     public ReporteMinisteriosService() {
         this.ofrendaDAO = new OfrendaDAOImpl();
         this.salidaDAO = new SalidaDAOImpl();
+        
     }
 
     // Método para obtener el nombre del ministerio (podrías tener una tabla de ministerios y un DAO para ello)
