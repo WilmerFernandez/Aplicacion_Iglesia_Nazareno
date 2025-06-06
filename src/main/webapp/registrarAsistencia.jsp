@@ -10,21 +10,21 @@
         String error = (String) request.getAttribute("error");
         if (mensaje != null) {
     %>
-            <div class="message-success">
-                <%= mensaje %>
-            </div>
+    <div class="message-success">
+        <%= mensaje%>
+    </div>
     <%
-        } else if (error != null) {
+    } else if (error != null) {
     %>
-            <div class="message-error">
-                <%= error %>
-            </div>
+    <div class="message-error">
+        <%= error%>
+    </div>
     <%
         }
     %>
     <%-- **FIN: CÓDIGO PARA MOSTRAR MENSAJES DE ÉXITO/ERROR** --%>
 
-    <form action="<%= request.getContextPath() %>/asistencia" method="post">
+    <form action="<%= request.getContextPath()%>/asistencia" method="post">
         <input type="hidden" name="action" value="registrar">
 
         <div class="form-group">
@@ -70,6 +70,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        font-family: 'Arial', sans-serif;
     }
 
     .form-container h2 i {
@@ -79,7 +80,9 @@
 
     .form-group {
         margin-bottom: 20px;
+        font-family: 'Arial', sans-serif; /* Puedes cambiar 'Arial' por la fuente que desees */
     }
+
 
     .form-group label {
         display: block;
