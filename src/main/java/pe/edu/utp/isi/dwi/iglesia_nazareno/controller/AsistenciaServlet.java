@@ -10,26 +10,42 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(name = "AsistenciaServlet", urlPatterns = {"/asistencia"})
 public class AsistenciaServlet extends HttpServlet {
 
     private AsistenciaService asistenciaService;
-    // Define la ruta del JSP una sola vez para evitar errores de escritura
-    private final String ASISTENCIA_FORM_JSP = "registrarAsistencia.jsp"; 
-    // ^^^ AJUSTA ESTA RUTA si tu JSP del formulario no está ahí ^^^
+    private Map<String, String> validJspPaths;
 
     @Override
     public void init() throws ServletException {
         super.init();
         asistenciaService = new AsistenciaService();
+
+        validJspPaths = new HashMap<>();
+   
+        validJspPaths.put("registrarAsistencia", "/WEB-INF/vistas/registrarAsistencia.jsp");
+        validJspPaths.put("registrarAsistenciaJNI", "/WEB-INF/vistas/registrarAsistenciaJNI.jsp");
+        validJspPaths.put("registrarAsistenciaMNI", "/WEB-INF/vistas/registrarAsistenciaMNI.jsp");
+        validJspPaths.put("registrarAsistenciaDNI", "/WEB-INF/vistas/registrarAsistenciaDNI.jsp");
+        
+        // Añador aquí cualquier otro JSP que uses para formularios.
+    }
+
+    private String getJspPath(String jspName) {
+     
+        return validJspPaths.getOrDefault(jspName, "/WEB-INF/vistas/registrarAsistencia.jsp");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Simplemente reenvía al JSP del formulario.
-        request.getRequestDispatcher(ASISTENCIA_FORM_JSP).forward(request, response);
+        String requestedForm = request.getParameter("form");
+        String targetJsp = getJspPath(requestedForm != null ? requestedForm : "registrarAsistencia");
+
+        request.getRequestDispatcher(targetJsp).forward(request, response);
     }
 
     @Override
@@ -37,46 +53,64 @@ public class AsistenciaServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
+        boolean responseCommitted = false;
 
-        // Esta bandera nos ayudará a saber si ya hemos redirigido/enviado una respuesta
-        boolean responseCommitted = false; 
+        String originatingJspName = request.getParameter("jspName");
+        String targetJsp = getJspPath(originatingJspName);
 
         if ("registrar".equalsIgnoreCase(action)) {
             try {
                 Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuarioLogueado");
 
                 if (usuarioLogueado == null) {
-                    // Si el usuario no está logueado, establece un error en la sesión
-                    // y redirige al login. Esto COMPROMETE LA RESPUESTA.
                     request.getSession().setAttribute("error", "Debe iniciar sesión para registrar asistencia.");
                     response.sendRedirect(request.getContextPath() + "/login");
-                    responseCommitted = true; // Indicamos que la respuesta ya fue enviada
-                    return; // ¡IMPORTANTE! Detiene la ejecución aquí para evitar el forward
+                    responseCommitted = true;
+                    return;
                 }
 
-                // Solo si el usuario está logueado, procedemos a parsear y registrar
-                int cantidadAdultos = Integer.parseInt(request.getParameter("cantidadAdultos"));
-                int cantidadJovenes = Integer.parseInt(request.getParameter("cantidadJovenes"));
-                int cantidadAdolescentes = Integer.parseInt(request.getParameter("cantidadAdolescentes"));
-                int cantidadNinos = Integer.parseInt(request.getParameter("cantidadNinos"));
+                int idMinisterio;
+                String idMinisterioParam = request.getParameter("idMinisterioForm");
 
-                int idUsuarioRegistrador = usuarioLogueado.getIdUsuario();
-
-                Asistencia asistencia = new Asistencia();
-                asistencia.setFecha(Timestamp.valueOf(LocalDateTime.now()));
-                asistencia.setIdMinisterio(1); // Fija id_ministerio a 1
-                asistencia.setCantidadAdultos(cantidadAdultos);
-                asistencia.setCantidadJovenes(cantidadJovenes);
-                asistencia.setCantidadAdolescentes(cantidadAdolescentes);
-                asistencia.setCantidadNinos(cantidadNinos);
-                asistencia.setRegistradoPor(idUsuarioRegistrador);
-
-                boolean registrado = asistenciaService.registrarAsistencia(asistencia);
-
-                if (registrado) {
-                    request.setAttribute("mensaje", "Asistencia registrada correctamente.");
+                if (idMinisterioParam != null && !idMinisterioParam.trim().isEmpty()) {
+                    try {
+                        idMinisterio = Integer.parseInt(idMinisterioParam);
+                    } catch (NumberFormatException e) {
+                        request.setAttribute("error", "Error: El ID del Ministerio no es un número válido.");
+                        idMinisterio = 0;
+                        System.err.println("NumberFormatException for idMinisterioForm: " + e.getMessage());
+                    }
                 } else {
-                    request.setAttribute("error", "No se pudo registrar la asistencia. La base de datos no confirmó la inserción.");
+                    request.setAttribute("error", "Error: El ID del Ministerio es requerido y no fue enviado.");
+                    idMinisterio = 0;
+                }
+
+                if (idMinisterio <= 0) {
+                    System.err.println("Intentó registrar con ID de Ministerio inválido o ausente: " + idMinisterioParam);
+                } else {
+                    int cantidadAdultos = Integer.parseInt(request.getParameter("cantidadAdultos"));
+                    int cantidadJovenes = Integer.parseInt(request.getParameter("cantidadJovenes"));
+                    int cantidadAdolescentes = Integer.parseInt(request.getParameter("cantidadAdolescentes"));
+                    int cantidadNinos = Integer.parseInt(request.getParameter("cantidadNinos"));
+
+                    int idUsuarioRegistrador = usuarioLogueado.getIdUsuario();
+
+                    Asistencia asistencia = new Asistencia();
+                    asistencia.setFecha(Timestamp.valueOf(LocalDateTime.now()));
+                    asistencia.setIdMinisterio(idMinisterio); 
+                    asistencia.setCantidadAdultos(cantidadAdultos);
+                    asistencia.setCantidadJovenes(cantidadJovenes);
+                    asistencia.setCantidadAdolescentes(cantidadAdolescentes);
+                    asistencia.setCantidadNinos(cantidadNinos);
+                    asistencia.setRegistradoPor(idUsuarioRegistrador);
+
+                    boolean registrado = asistenciaService.registrarAsistencia(asistencia);
+
+                    if (registrado) {
+                        request.setAttribute("mensaje", "Asistencia registrada correctamente para el Ministerio ID: " + idMinisterio + ".");
+                    } else {
+                        request.setAttribute("error", "No se pudo registrar la asistencia. La base de datos no confirmó la inserción.");
+                    }
                 }
 
             } catch (NumberFormatException e) {
@@ -85,18 +119,14 @@ public class AsistenciaServlet extends HttpServlet {
             } catch (Exception e) {
                 request.setAttribute("error", "Ocurrió un error inesperado al registrar la asistencia: " + e.getMessage());
                 e.printStackTrace();
-            } 
-            // El bloque 'finally' se ha eliminado.
-            // El forward se hará solo si la respuesta no ha sido comprometida aún.
+            }
         } else {
-            // Si la acción es inválida, envía un error. Esto también COMPROMETE LA RESPUESTA.
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción inválida para el registro de asistencia.");
-            responseCommitted = true; // Indicamos que la respuesta ya fue enviada
+            responseCommitted = true;
         }
 
-        // Este es el punto clave: solo hacemos forward si la respuesta no ha sido enviada (redirigida/error)
         if (!responseCommitted) {
-            request.getRequestDispatcher(ASISTENCIA_FORM_JSP).forward(request, response);
+            request.getRequestDispatcher(targetJsp).forward(request, response);
         }
     }
 }
