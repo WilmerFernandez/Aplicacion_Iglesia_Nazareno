@@ -5,12 +5,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <title>Registrar Ofrenda</title>
+    <title>Registrar Ofrenda DNI</title> <%-- Título específico para DNI --%>
     <style>
-        /* Estilos generales del cuerpo */
+        /* ... Tu CSS existente ... (Igual que en registrarOfrenda.jsp) */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e6f7ff; /* Fondo azul muy claro */
+            background-color: #e6f7ff;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -19,7 +19,6 @@
             min-height: 100vh;
         }
 
-        /* Contenedor principal del formulario */
         .form-container {
             max-width: 450px;
             background: #ffffff;
@@ -29,33 +28,30 @@
             width: 100%;
         }
 
-        /* Título del formulario */
         h2 {
             margin-top: 0;
-            color: #1a4f8a; /* Azul oscuro para el título */
+            color: #1a4f8a;
             text-align: center;
             margin-bottom: 25px;
             font-size: 1.8em;
             font-weight: 600;
         }
 
-        /* Estilos para las etiquetas de los campos */
         label {
             display: block;
             margin-top: 18px;
             margin-bottom: 5px;
             font-weight: bold;
-            color: #2c5f9b; /* Azul medio para las etiquetas */
+            color: #2c5f9b;
             font-size: 0.95em;
         }
 
-        /* Estilos para campos de entrada */
         input[type="date"],
         input[type="number"] {
             width: calc(100% - 20px);
             padding: 12px 10px;
             margin-top: 5px;
-            border: 1px solid #91c1ea; /* Borde azul claro */
+            border: 1px solid #91c1ea;
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 1em;
@@ -65,15 +61,14 @@
 
         input[type="date"]:focus,
         input[type="number"]:focus {
-            border-color: #007bff; /* Azul brillante al enfocar */
+            border-color: #007bff;
             outline: none;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
         }
 
-        /* Estilos para el botón de enviar */
         button[type="submit"] {
             margin-top: 30px;
-            background-color: #007bff; /* Azul primario para el botón */
+            background-color: #007bff;
             color: white;
             border: none;
             padding: 15px;
@@ -86,12 +81,16 @@
         }
 
         button[type="submit"]:hover {
-            background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+            background-color: #0056b3;
         }
 
-        /* Estilos para los mensajes de éxito/error */
+        .message-container {
+            min-height: 50px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
         .message {
-            margin-top: 20px;
             padding: 12px;
             border-radius: 5px;
             font-weight: bold;
@@ -99,13 +98,13 @@
         }
 
         .message.success {
-            background-color: #d1ecf1; /* Azul claro para éxito */
-            color: #0c5460; /* Azul oscuro para texto de éxito */
+            background-color: #d1ecf1;
+            color: #0c5460;
             border: 1px solid #bee5eb;
         }
 
         .message.error {
-            background-color: #f8d7da; /* Rojo para error (se mantiene para contraste) */
+            background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
@@ -113,17 +112,24 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Registrar Nueva Ofrenda</h2>
+        <h2>Registrar Ofrenda DNI</h2>
 
-        <c:if test="${not empty mensaje}">
-            <div class="message success">${mensaje}</div>
-        </c:if>
-        <c:if test="${not empty error}">
-            <div class="message error">${error}</div>
-        </c:if>
+        <div class="message-container">
+            <c:if test="${not empty mensaje}">
+                <div class="message success">${mensaje}</div>
+            </c:if>
+            <c:if test="${not empty error}">
+                <div class="message error">${error}</div>
+            </c:if>
+        </div>
 
         <form action="${pageContext.request.contextPath}/ofrenda" method="post">
             <input type="hidden" name="action" value="registrar" />
+            
+            <%-- CAMBIOS CLAVE PARA OFRENDA DNI: --%>
+            <input type="hidden" name="idMinisterioForm" value="4" /> <%-- ID para DNI --%>
+            <input type="hidden" name="jspName" value="registrarOfrendaDNI" /> <%-- El nombre del JSP --%>
+            <%-- FIN CAMBIOS CLAVE --%>
 
             <label for="fecha">Fecha:</label>
             <input type="date" id="fecha" name="fecha" required />

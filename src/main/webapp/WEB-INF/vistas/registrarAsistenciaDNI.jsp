@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="asistencia-form">
-    <h2><i class="fas fa-users"></i> Registrar Asistencia</h2>
+    <h2><i class="fas fa-users"></i> Registrar Asistencia DNI</h2>
 
     <div id="messageDisplayArea">
         <% String mensaje = (String) request.getAttribute("mensaje");

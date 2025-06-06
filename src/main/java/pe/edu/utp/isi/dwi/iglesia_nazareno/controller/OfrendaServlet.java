@@ -4,14 +4,16 @@ import pe.edu.utp.isi.dwi.iglesia_nazareno.model.Ofrenda;
 import pe.edu.utp.isi.dwi.iglesia_nazareno.model.Ministerio;
 import pe.edu.utp.isi.dwi.iglesia_nazareno.model.Usuario;
 import pe.edu.utp.isi.dwi.iglesia_nazareno.services.OfrendaService;
-import pe.edu.utp.isi.dwi.iglesia_nazareno.services.MinisterioService; // Necesario si mantienes el doGet para listar Ministerios, aunque no lo uses en el formulario
+import pe.edu.utp.isi.dwi.iglesia_nazareno.services.MinisterioService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List; // Aunque no se use directamente para cargar el formulario, puede ser útil
 
 @WebServlet(name = "OfrendaServlet", urlPatterns = {"/ofrenda"})
 public class OfrendaServlet extends HttpServlet {
@@ -19,31 +21,50 @@ public class OfrendaServlet extends HttpServlet {
     private OfrendaService ofrendaService;
     private MinisterioService ministerioService; // Se mantiene por si en el futuro decides usarlo para algo más
 
+    // Mapas para gestionar las rutas de los JSPs y sus IDs de ministerio asociados
+    private Map<String, String> validJspPaths;
+    private Map<String, Integer> jspNameToMinisterioId;
+
     @Override
     public void init() throws ServletException {
         super.init();
         ofrendaService = new OfrendaService();
         ministerioService = new MinisterioService();
+
+        validJspPaths = new HashMap<>();
+        jspNameToMinisterioId = new HashMap<>();
+
+        // Definir rutas de JSPs para Ofrendas
+        // ¡IMPORTANTE! Asegúrate de que estas rutas sean correctas para tu proyecto
+        // Si tus JSPs están en /WEB-INF/vistas/, ajusta las rutas
+        validJspPaths.put("registrarOfrenda", "/WEB-INF/vistas/registrarOfrenda.jsp");          // Iglesia (General)
+        validJspPaths.put("registrarOfrendaJNI", "/WEB-INF/vistas/registrarOfrendaJNI.jsp");    // JNI
+        validJspPaths.put("registrarOfrendaMNI", "/WEB-INF/vistas/registrarOfrendaMNI.jsp");    // MNI
+        validJspPaths.put("registrarOfrendaDNI", "/WEB-INF/vistas/registrarOfrendaDNI.jsp");    // DNI
+
+        // Asociar el nombre del JSP con el ID del Ministerio correspondiente
+        // ¡Estos son los IDs que has proporcionado: IGLESIA ES 1, JNI 2, MNI 3, DNI 4
+        jspNameToMinisterioId.put("registrarOfrenda", 1);    // Iglesia (General)
+        jspNameToMinisterioId.put("registrarOfrendaJNI", 2);   // JNI
+        jspNameToMinisterioId.put("registrarOfrendaMNI", 3);   // MNI
+        jspNameToMinisterioId.put("registrarOfrendaDNI", 4);   // DNI
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            // Aunque el JSP ya no necesita la lista de ministerios para un dropdown,
-            // mantenemos la lógica por si quieres usar 'listaMinisterios' para otra cosa
-            // o si en el futuro decides reintroducir la selección.
-            // Si solo quieres cargar el formulario sin datos adicionales, puedes simplificar esto.
-            List<Ministerio> ministerios = ministerioService.listarTodosMinisterios();
-            request.setAttribute("listaMinisterios", ministerios);
 
-            // Enviar a la JSP para mostrar el formulario de registro de ofrendas
-            request.getRequestDispatcher("/registrarOfrenda.jsp").forward(request, response);
+        // Obtener el nombre del JSP a cargar desde el parámetro 'form'
+        String jspName = request.getParameter("form");
+        String path = validJspPaths.get(jspName);
 
-        } catch (Exception e) {
-            request.setAttribute("error", "Error al cargar recursos para el formulario: " + e.getMessage());
-            e.printStackTrace();
-            request.getRequestDispatcher("/errorGenerico.jsp").forward(request, response);
+        if (path != null) {
+            // Si el JSP es válido, lo despachamos
+            request.getRequestDispatcher(path).forward(request, response);
+        } else {
+            // Si 'form' es nulo o no válido, se puede redirigir a un JSP por defecto o mostrar un error
+            request.setAttribute("error", "Formulario de Ofrenda no especificado o inválido.");
+            request.getRequestDispatcher("/WEB-INF/vistas/errorGenerico.jsp").forward(request, response);
         }
     }
 
@@ -74,8 +95,17 @@ public class OfrendaServlet extends HttpServlet {
                 }
 
                 // --- ¡Aquí está el cambio clave! ---
-                // Establecer el ID de Ministerio fijo a 1 (para "Iglesia")
-                int idMinisterio = 1; // Establece directamente el ID 1
+                // Obtener el ID de Ministerio desde el parámetro oculto del formulario
+                String jspNameFromForm = request.getParameter("jspName");
+                Integer idMinisterio = null;
+
+                if (jspNameFromForm != null) {
+                    idMinisterio = jspNameToMinisterioId.get(jspNameFromForm);
+                }
+
+                if (idMinisterio == null) {
+                    throw new IllegalArgumentException("ID de Ministerio no encontrado para el formulario: " + jspNameFromForm);
+                }
 
                 // Obtener el usuario logueado desde la sesión
                 Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("usuarioLogueado");
@@ -88,7 +118,7 @@ public class OfrendaServlet extends HttpServlet {
                 Ofrenda ofrenda = new Ofrenda();
                 ofrenda.setFecha(fecha);
                 ofrenda.setMonto(monto);
-                ofrenda.setIdMinisterio(idMinisterio); // Usamos el ID fijo
+                ofrenda.setIdMinisterio(idMinisterio); // Usamos el ID dinámico
                 ofrenda.setIdUsuarioRegistrador(idUsuarioRegistrador);
 
                 // Registrar la ofrenda a través del servicio
@@ -96,7 +126,7 @@ public class OfrendaServlet extends HttpServlet {
 
                 // Preparar mensaje para la vista
                 if (registrado) {
-                    request.setAttribute("mensaje", "Ofrenda registrada correctamente.");
+                    request.setAttribute("mensaje", "Ofrenda para " + getMinisterioName(idMinisterio) + " registrada correctamente.");
                 } else {
                     request.setAttribute("error", "No se pudo registrar la ofrenda. La base de datos no confirmó la inserción.");
                 }
@@ -109,11 +139,34 @@ public class OfrendaServlet extends HttpServlet {
                 e.printStackTrace();
             }
 
-            // Después de procesar el POST, se vuelve a llamar al doGet para recargar el formulario con mensajes
-            doGet(request, response);
+            // Después de procesar el POST, se vuelve a cargar el JSP correcto con mensajes
+            // Se debe obtener el jspName del formulario enviado
+            String jspNameAfterPost = request.getParameter("jspName");
+            String pathToForward = validJspPaths.get(jspNameAfterPost);
+
+            if (pathToForward != null) {
+                request.getRequestDispatcher(pathToForward).forward(request, response);
+            } else {
+                // Fallback si por alguna razón el jspName es inválido después del POST
+                request.setAttribute("error", "Error interno: Formulario de ofrenda de retorno no válido.");
+                request.getRequestDispatcher("/WEB-INF/vistas/errorGenerico.jsp").forward(request, response);
+            }
 
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción POST inválida");
+        }
+    }
+
+    // Método auxiliar para obtener el nombre del ministerio (opcional, para mensajes más amigables)
+    private String getMinisterioName(int id) {
+        // En un escenario real, esto se cargaría de la BD o de un mapa más robusto.
+        // Por simplicidad, usamos un switch con los IDs que nos diste.
+        switch (id) {
+            case 1: return "Iglesia (General)";
+            case 2: return "JNI";
+            case 3: return "MNI";
+            case 4: return "DNI";
+            default: return "Desconocido";
         }
     }
 }

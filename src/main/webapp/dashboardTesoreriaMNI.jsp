@@ -102,7 +102,7 @@
     </div>
 
     <div id="menu">
-        <button onclick="cargar('ofrendaMNI', this)">💰 Registrar Ofrenda</button>
+        <button onclick="cargar('ofrenda?form=registrarOfrendaMNI', this)">💰 Registrar Ofrenda</button>
         <button onclick="cargar('asistencia?form=registrarAsistenciaMNI', this)">💵 Registrar Asistencia</button>
         <button onclick="cargar('salida?form=registrarSalidaMNI', this)">💸 Registrar Salidas</button>
         <button onclick="cargar('', this)">📊 Reportes Financieros</button>

@@ -103,7 +103,7 @@
 
     <div id="menu">
         <button onclick="cargar('diezmo', this)">💰 Registrar Diezmo</button>
-        <button onclick="cargar('ofrenda', this)">💵 Registrar Ofrenda</button>
+        <button onclick="cargar('ofrenda?form=registrarOfrenda', this)">💵 Registrar Ofrenda</button>
         <button onclick="cargar('salida?form=registrarSalida', this)">💸 Registrar Salidas</button>
         <button onclick="cargar('reporte', this)">📊 Reportes Financieros</button>
         <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar sesión</button>
