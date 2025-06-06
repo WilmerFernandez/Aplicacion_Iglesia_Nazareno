@@ -17,6 +17,7 @@ public class OfrendaDAOImpl implements OfrendaDAO {
     // Se modificó la consulta para incluir ID_Ministerio y Registrado_Por
     private static final String SQL_INSERT = "INSERT INTO Ofrenda (Fecha, Monto, ID_Ministerio, Registrado_Por) VALUES (?, ?, ?, ?)";
     private static final String SQL_SELECT_ALL = "SELECT ID_Ofrenda, Fecha, Monto, ID_Ministerio, Registrado_Por FROM Ofrenda"; // Especifica las columnas para mayor claridad
+     private static final String SQL_SELECT_BY_MINISTERIO = "SELECT ID_Ofrenda, Fecha, Monto, ID_Ministerio, Registrado_Por FROM Ofrenda WHERE ID_Ministerio = ?";
     private static final String SQL_SUM_BY_MINISTERIO = "SELECT SUM(Monto) AS Total FROM Ofrenda WHERE ID_Ministerio = ?"; // <-- NUEVA CONSULTA
 
     @Override
@@ -82,6 +83,35 @@ public class OfrendaDAOImpl implements OfrendaDAO {
         return lista;
     }
 
+    @Override
+    public List<Ofrenda> listarOfrendasPorMinisterio(int idMinisterio) throws SQLException {
+        List<Ofrenda> lista = new ArrayList<>();
+        try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_MINISTERIO)) {
+            ps.setInt(1, idMinisterio);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Ofrenda o = new Ofrenda();
+                    o.setId(rs.getInt("ID_Ofrenda"));
+                    Timestamp dbTimestamp = rs.getTimestamp("Fecha");
+                    if (dbTimestamp != null) {
+                        o.setFecha(dbTimestamp.toLocalDateTime().toLocalDate());
+                    }
+                    o.setMonto(rs.getDouble("Monto"));
+                    o.setIdMinisterio(rs.getInt("ID_Ministerio"));
+                    o.setIdUsuarioRegistrador(rs.getInt("Registrado_Por"));
+                    lista.add(o);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error listando ofrendas por ministerio " + idMinisterio + ": " + e.getMessage());
+            throw e;
+        }
+        return lista;
+    }
+    
+    
+    
+    
     @Override
     public double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException { // <-- IMPLEMENTACIÓN DEL NUEVO MÉTODO
         double total = 0.0;

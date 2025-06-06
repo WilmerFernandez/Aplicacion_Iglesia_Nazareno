@@ -21,8 +21,9 @@ public class SalidaDAOImpl implements SalidaDAO {
     
     private static final String SQL_INSERT = "INSERT INTO Salida (Fecha, Monto, Descripcion, ID_Ministerio, Registrado_Por) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ALL = "SELECT ID_Salida, Fecha, Monto, Descripcion, ID_Ministerio, Registrado_Por FROM Salida";
+    private static final String SQL_SELECT_BY_MINISTERIO = "SELECT ID_Salida, Fecha, Monto, Descripcion, ID_Ministerio, Registrado_Por FROM Salida WHERE ID_Ministerio = ?";
     private static final String SQL_SUM_ALL = "SELECT SUM(Monto) AS Total FROM Salida"; 
-    private static final String SQL_SUM_BY_MINISTERIO = "SELECT SUM(Monto) AS TotalOfrendas FROM Ofrenda WHERE ID_Ministerio = ?";
+    private static final String SQL_SUM_BY_MINISTERIO = "SELECT SUM(monto) AS TotalSalidas FROM Salida WHERE ID_Ministerio = ?";
 
     @Override
     public boolean insertar(Salida salida) throws SQLException {
@@ -74,6 +75,35 @@ public class SalidaDAOImpl implements SalidaDAO {
         }
         return lista;
     }
+    
+    @Override
+    public List<Salida> listarSalidasPorMinisterio(int idMinisterio) throws SQLException {
+        List<Salida> lista = new ArrayList<>();
+        try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_MINISTERIO)) {
+            ps.setInt(1, idMinisterio);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Salida s = new Salida();
+                    s.setIdSalida(rs.getInt("ID_Salida"));
+                    Timestamp dbTimestamp = rs.getTimestamp("Fecha");
+                    if (dbTimestamp != null) {
+                        s.setFecha(dbTimestamp.toLocalDateTime().toLocalDate());
+                    }
+                    s.setMonto(rs.getDouble("Monto"));
+                    s.setDescripcion(rs.getString("Descripcion"));
+                    s.setIdMinisterio(rs.getInt("ID_Ministerio"));
+                    s.setRegistradoPor(rs.getInt("Registrado_Por"));
+                    lista.add(s);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error listando salidas por ministerio " + idMinisterio + ": " + e.getMessage());
+            throw e;
+        }
+        return lista;
+    }
+    
+    
 
     @Override
     public double obtenerTotalSalidas() throws SQLException { // <-- IMPLEMENTACIÓN DEL NUEVO MÉTODO
@@ -91,7 +121,7 @@ public class SalidaDAOImpl implements SalidaDAO {
     
     
     @Override
-    public double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException {
+    public double obtenerTotalSalidasPorMinisterio(int idMinisterio) throws SQLException {
         double total = 0.0;
         try (Connection con = BDConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(SQL_SUM_BY_MINISTERIO)) {
@@ -99,7 +129,7 @@ public class SalidaDAOImpl implements SalidaDAO {
             ps.setInt(1, idMinisterio);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    total = rs.getDouble("TotalOfrendas");
+                    total = rs.getDouble("TotalSalidas");
                 }
             }
 
@@ -109,5 +139,7 @@ public class SalidaDAOImpl implements SalidaDAO {
         }
         return total;
     }
+    
+    
 }
 

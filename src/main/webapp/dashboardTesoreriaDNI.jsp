@@ -105,7 +105,7 @@
         <button onclick="cargar('ofrenda?form=registrarOfrendaDNI', this)">💰 Registrar Ofrenda</button>
         <button onclick="cargar('asistencia?form=registrarAsistenciaDNI', this)">💵 Registrar Asistencia</button>
         <button onclick="cargar('salida?form=registrarSalidaDNI', this)">💸 Registrar Salidas</button>
-        <button onclick="cargar('', this)">📊 Reportes Financieros</button>
+        <button onclick="cargar('ReporteMinisteriosServlet?idMinisterio=4', this)">📊 Reportes Financieros</button>
         <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar sesión</button>
     </div>
 
