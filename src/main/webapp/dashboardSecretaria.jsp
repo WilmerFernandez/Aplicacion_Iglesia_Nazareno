@@ -104,7 +104,7 @@
     <div id="menu">
         <button onclick="cargar('registroFeligres.jsp', this)">Nuevo Feligres</button>
         <button onclick="cargar('listaFeligreses', this)">Lista de Feligres</button>
-        <button onclick="cargar('', this)">Vacio</button>
+        <button onclick="cargar('asistencia', this)">Registrar Asistencia</button>
         <button onclick="cargar('', this)">Vacio</button>
         <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar sesión</button>
     </div>
