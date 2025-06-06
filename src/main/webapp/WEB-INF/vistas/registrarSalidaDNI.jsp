@@ -5,9 +5,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <title>Registrar Salida</title>
+    <title>Registrar Salida General</title> <%-- Título específico para Salida General --%>
     <style>
-        /* Estilos generales del cuerpo */
+        /* ... Tu CSS existente, lo puedes poner en un archivo CSS externo y enlazarlo para DRY ... */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #e6f7ff;
@@ -19,7 +19,6 @@
             min-height: 100vh;
         }
 
-        /* Contenedor principal del formulario */
         .form-container {
             max-width: 450px;
             background: #ffffff;
@@ -29,7 +28,6 @@
             width: 100%;
         }
 
-        /* Título del formulario */
         h2 {
             margin-top: 0;
             color: #1a4f8a;
@@ -39,7 +37,6 @@
             font-weight: 600;
         }
 
-        /* Estilos para las etiquetas de los campos */
         label {
             display: block;
             margin-top: 18px;
@@ -49,7 +46,6 @@
             font-size: 0.95em;
         }
 
-        /* Estilos para campos de entrada y textarea */
         input[type="date"],
         input[type="number"],
         textarea {
@@ -73,7 +69,6 @@
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
         }
 
-        /* Estilos para el botón de enviar */
         button[type="submit"] {
             margin-top: 30px;
             background-color: #007bff;
@@ -92,9 +87,13 @@
             background-color: #0056b3;
         }
 
-        /* Estilos para los mensajes de éxito/error */
+        .message-container {
+            min-height: 50px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
         .message {
-            margin-top: 20px;
             padding: 12px;
             border-radius: 5px;
             font-weight: bold;
@@ -116,17 +115,24 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Registrar Nueva Salida</h2>
+        <h2>Registrar Salida General <%-- Puedes usar el idMinisterioActual si quieres: <c:if test="${not empty idMinisterioActual}"> (ID: ${idMinisterioActual})</c:if> --%></h2>
 
-        <c:if test="${not empty mensaje}">
-            <div class="message success">${mensaje}</div>
-        </c:if>
-        <c:if test="${not empty error}">
-            <div class="message error">${error}</div>
-        </c:if>
+        <div class="message-container">
+            <c:if test="${not empty mensaje}">
+                <div class="message success">${mensaje}</div>
+            </c:if>
+            <c:if test="${not empty error}">
+                <div class="message error">${error}</div>
+            </c:if>
+        </div>
 
         <form action="${pageContext.request.contextPath}/salida" method="post">
             <input type="hidden" name="action" value="registrar" />
+            
+            <%-- CAMBIOS IMPORTANTES AQUÍ: --%>
+            <input type="hidden" name="idMinisterioForm" value="4" /> <%-- Este debe ser el ID para Salida General (Iglesia) --%>
+            <input type="hidden" name="jspName" value="registrarSalidaDNI" /> <%-- Este debe coincidir con el nombre del JSP (registrarSalida.jsp) --%>
+            <%-- FIN CAMBIOS IMPORTANTES --%>
 
             <label for="fecha">Fecha:</label>
             <input type="date" id="fecha" name="fecha" required />

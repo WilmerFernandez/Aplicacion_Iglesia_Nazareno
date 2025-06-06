@@ -10,6 +10,9 @@ import java.util.List;
 public interface SalidaDAO {
     boolean insertar(Salida salida) throws SQLException;
     List<Salida> listarTodos() throws SQLException;
-    // Puedes añadir más métodos como obtenerPorId, actualizar, eliminar si los necesitas
-    double obtenerTotalSalidas() throws SQLException; // <-- NUEVO MÉTODO
+    
+    double obtenerTotalSalidas() throws SQLException; 
+    
+// Nuevo método para sumar ofrendas por ministerio
+    double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException;
 }

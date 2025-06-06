@@ -1,5 +1,6 @@
 package pe.edu.utp.isi.dwi.iglesia_nazareno.services;
 
+import java.sql.SQLException;
 import pe.edu.utp.isi.dwi.iglesia_nazareno.DAO.OfrendaDAO;
 import pe.edu.utp.isi.dwi.iglesia_nazareno.implementacion.OfrendaDAOImpl;
 import pe.edu.utp.isi.dwi.iglesia_nazareno.model.Ofrenda;
@@ -20,5 +21,14 @@ public class OfrendaService {
 
     public List<Ofrenda> listarTodos() {
         return ofrendaDAO.listarTodos();
+    }
+    
+    public double calcularTotalOfrendasPorMinisterio(int idMinisterio) {
+        try {
+            return ofrendaDAO.obtenerTotalOfrendasPorMinisterio(idMinisterio);
+        } catch (SQLException e) {
+            System.err.println("Error en servicio al calcular total de ofrendas por ministerio: " + e.getMessage());
+            return 0.0;
+        }
     }
 }

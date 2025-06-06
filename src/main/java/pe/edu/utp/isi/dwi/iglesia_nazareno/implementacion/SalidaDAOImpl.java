@@ -18,18 +18,19 @@ import java.util.List;
  */
 public class SalidaDAOImpl implements SalidaDAO {
 
-    // Asegúrate de que los nombres de las columnas coincidan exactamente con tu script de tabla
+    
     private static final String SQL_INSERT = "INSERT INTO Salida (Fecha, Monto, Descripcion, ID_Ministerio, Registrado_Por) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ALL = "SELECT ID_Salida, Fecha, Monto, Descripcion, ID_Ministerio, Registrado_Por FROM Salida";
-    private static final String SQL_SUM_ALL = "SELECT SUM(Monto) AS Total FROM Salida"; // <-- NUEVA CONSULTA
+    private static final String SQL_SUM_ALL = "SELECT SUM(Monto) AS Total FROM Salida"; 
+    private static final String SQL_SUM_BY_MINISTERIO = "SELECT SUM(Monto) AS TotalOfrendas FROM Ofrenda WHERE ID_Ministerio = ?";
 
     @Override
     public boolean insertar(Salida salida) throws SQLException {
         boolean resultado = false;
         try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(SQL_INSERT)) {
 
-            // Convertir LocalDate a Timestamp para la DB
-            LocalDateTime localDateTime = salida.getFecha().atStartOfDay(); // O .atTime(LocalTime.now()) si necesitas la hora actual
+           
+            LocalDateTime localDateTime = salida.getFecha().atStartOfDay(); 
             ps.setTimestamp(1, Timestamp.valueOf(localDateTime));
             ps.setDouble(2, salida.getMonto());
             ps.setString(3, salida.getDescripcion());
@@ -87,4 +88,26 @@ public class SalidaDAOImpl implements SalidaDAO {
         }
         return total;
     }
+    
+    
+    @Override
+    public double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException {
+        double total = 0.0;
+        try (Connection con = BDConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(SQL_SUM_BY_MINISTERIO)) {
+
+            ps.setInt(1, idMinisterio);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    total = rs.getDouble("TotalOfrendas");
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al obtener total de ofrendas para ministerio " + idMinisterio + ": " + e.getMessage());
+            throw e;
+        }
+        return total;
+    }
 }
+
