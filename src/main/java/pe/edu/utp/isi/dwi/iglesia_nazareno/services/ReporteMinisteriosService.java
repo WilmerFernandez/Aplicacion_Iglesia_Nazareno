@@ -24,7 +24,7 @@ public class ReporteMinisteriosService {
     }
 
     // Método para obtener el nombre del ministerio (podrías tener una tabla de ministerios y un DAO para ello)
-    // Por simplicidad, lo haremos aquí de forma estática.
+    
     private String obtenerNombreMinisterio(int idMinisterio) {
         switch (idMinisterio) {
             case 2: return "JNI (Jóvenes Nazarenos Internacional)";

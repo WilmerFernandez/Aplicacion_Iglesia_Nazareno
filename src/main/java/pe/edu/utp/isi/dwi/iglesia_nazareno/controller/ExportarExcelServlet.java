@@ -22,10 +22,10 @@ public class ExportarExcelServlet extends HttpServlet {
         ReporteService reporteService = new ReporteService();
 
         try {
-            // Obtener datos frescos
+           
             List<Diezmo> diezmos = reporteService.listarTodosDiezmos();
-            List<Ofrenda> ofrendas = reporteService.listarTodasOfrendas();
-            List<Salida> salidas = reporteService.listarTodasSalidas();
+            List<Ofrenda> ofrendas = reporteService.listarOfrendasPorMinisterio();
+            List<Salida> salidas = reporteService.listarSalidasPorMinisterio();
             ReporteFinanciero reporte = reporteService.generarReporteFinancieroConsolidado();
 
             // Crear libro Excel

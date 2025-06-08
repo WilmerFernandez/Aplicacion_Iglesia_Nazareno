@@ -4,12 +4,12 @@ import java.util.List;
 
 public class ReporteMinisterios {
     private int idMinisterio;
-    private String nombreMinisterio; // Para mostrar el nombre del ministerio en el reporte
+    private String nombreMinisterio; 
     private List<Ofrenda> entradas;
     private List<Salida> salidas;
     private double totalEntradas;
     private double totalSalidas;
-    private double totalEnCaja; // totalEntradas - totalSalidas
+    private double totalEnCaja; 
 
     // Constructor
     public ReporteMinisterios() {

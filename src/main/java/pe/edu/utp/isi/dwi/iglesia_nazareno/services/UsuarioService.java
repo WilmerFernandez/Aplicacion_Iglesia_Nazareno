@@ -35,7 +35,7 @@ public class UsuarioService {
             throw new IllegalArgumentException("Usuario o contraseña no pueden ser nulos");
         }
 
-        // Validar que el usuario no exista ya
+        
         if (usuarioDAO.buscarPorUsuario(usuario.getUsuario()) != null) {
             throw new IllegalArgumentException("El nombre de usuario ya existe");
         }
@@ -80,5 +80,5 @@ public class UsuarioService {
         return usuarioDAO.listarTodos();
     }
 
-    // Puedes agregar más métodos de negocio como actualizar usuario, cambiar estado, etc.
+    // Aqui se agrega más métodos de negocio como actualizar usuario, cambiar estado, etc.
 }

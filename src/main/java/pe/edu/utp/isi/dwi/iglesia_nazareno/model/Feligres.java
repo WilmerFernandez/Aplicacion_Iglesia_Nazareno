@@ -8,10 +8,10 @@ public class Feligres {
     private String nombre;
     private String apellido;
     private LocalDate fechaNacimiento;
-    private String estado; // Ejemplo: activo, inactivo
-    private String telefono;      // Nuevo campo Telefono
-    private String direccion;     // Nuevo campo Direccion
-    private LocalDateTime fechaRegistro; // ¡CAMBIADO A LocalDateTime!
+    private String estado; 
+    private String telefono;      
+    private String direccion;     
+    private LocalDateTime fechaRegistro; 
 
     public Feligres() {}
 
@@ -50,7 +50,7 @@ public class Feligres {
     public String getDireccion() { return direccion; }   // Getter para Direccion
     public void setDireccion(String direccion) { this.direccion = direccion; } // Setter para Direccion
 
-    // ¡CAMBIADO AQUÍ!
+    
     public LocalDateTime getFechaRegistro() { return fechaRegistro; }
     public void setFechaRegistro(LocalDateTime fechaRegistro) { this.fechaRegistro = fechaRegistro; }
 }

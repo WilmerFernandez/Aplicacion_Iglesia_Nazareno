@@ -31,7 +31,7 @@ public class AsistenciaServlet extends HttpServlet {
         validJspPaths.put("registrarAsistenciaMNI", "/WEB-INF/vistas/registrarAsistenciaMNI.jsp");
         validJspPaths.put("registrarAsistenciaDNI", "/WEB-INF/vistas/registrarAsistenciaDNI.jsp");
         
-        // Añador aquí cualquier otro JSP que uses para formularios.
+        
     }
 
     private String getJspPath(String jspName) {

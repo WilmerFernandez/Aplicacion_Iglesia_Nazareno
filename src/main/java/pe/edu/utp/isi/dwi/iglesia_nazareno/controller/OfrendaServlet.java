@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List; // Aunque no se use directamente para cargar el formulario, puede ser útil
+import java.util.List; 
 
 @WebServlet(name = "OfrendaServlet", urlPatterns = {"/ofrenda"})
 public class OfrendaServlet extends HttpServlet {
 
     private OfrendaService ofrendaService;
-    private MinisterioService ministerioService; // Se mantiene por si en el futuro decides usarlo para algo más
+    private MinisterioService ministerioService; 
 
     // Mapas para gestionar las rutas de los JSPs y sus IDs de ministerio asociados
     private Map<String, String> validJspPaths;
@@ -34,16 +34,13 @@ public class OfrendaServlet extends HttpServlet {
         validJspPaths = new HashMap<>();
         jspNameToMinisterioId = new HashMap<>();
 
-        // Definir rutas de JSPs para Ofrendas
-        // ¡IMPORTANTE! Asegúrate de que estas rutas sean correctas para tu proyecto
-        // Si tus JSPs están en /WEB-INF/vistas/, ajusta las rutas
+        
         validJspPaths.put("registrarOfrenda", "/WEB-INF/vistas/registrarOfrenda.jsp");          // Iglesia (General)
         validJspPaths.put("registrarOfrendaJNI", "/WEB-INF/vistas/registrarOfrendaJNI.jsp");    // JNI
         validJspPaths.put("registrarOfrendaMNI", "/WEB-INF/vistas/registrarOfrendaMNI.jsp");    // MNI
         validJspPaths.put("registrarOfrendaDNI", "/WEB-INF/vistas/registrarOfrendaDNI.jsp");    // DNI
 
-        // Asociar el nombre del JSP con el ID del Ministerio correspondiente
-        // ¡Estos son los IDs que has proporcionado: IGLESIA ES 1, JNI 2, MNI 3, DNI 4
+        
         jspNameToMinisterioId.put("registrarOfrenda", 1);    // Iglesia (General)
         jspNameToMinisterioId.put("registrarOfrendaJNI", 2);   // JNI
         jspNameToMinisterioId.put("registrarOfrendaMNI", 3);   // MNI
@@ -94,8 +91,7 @@ public class OfrendaServlet extends HttpServlet {
                     throw new IllegalArgumentException("El monto no puede estar vacío.");
                 }
 
-                // --- ¡Aquí está el cambio clave! ---
-                // Obtener el ID de Ministerio desde el parámetro oculto del formulario
+            
                 String jspNameFromForm = request.getParameter("jspName");
                 Integer idMinisterio = null;
 
@@ -160,7 +156,7 @@ public class OfrendaServlet extends HttpServlet {
     // Método auxiliar para obtener el nombre del ministerio (opcional, para mensajes más amigables)
     private String getMinisterioName(int id) {
         // En un escenario real, esto se cargaría de la BD o de un mapa más robusto.
-        // Por simplicidad, usamos un switch con los IDs que nos diste.
+        
         switch (id) {
             case 1: return "Iglesia (General)";
             case 2: return "JNI";

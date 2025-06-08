@@ -22,7 +22,6 @@ public class AsistenciaService {
             return asistenciaDAO.registrarAsistencia(asistencia);
         } catch (SQLException e) {
             System.err.println("Error en el servicio al registrar asistencia: " + e.getMessage());
-            // Aquí podrías loggear la excepción o convertirla en una excepción de negocio
             return false;
         }
     }

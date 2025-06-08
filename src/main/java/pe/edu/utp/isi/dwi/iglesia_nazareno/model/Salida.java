@@ -14,8 +14,8 @@ public class Salida {
     private String descripcion;
     private int idMinisterio;
     private int registradoPor;
-    private String nombreMinisterio; // NUEVO: Para el nombre del ministerio
-    private String nombreUsuarioRegistrador; // NUEVO: Para el nombre del usuario que registró
+    private String nombreMinisterio; 
+    private String nombreUsuarioRegistrador; 
 
     public Salida() {
         // Constructor por defecto
@@ -44,7 +44,7 @@ public class Salida {
         this.fecha = fecha;
     }
 
-    // --- ¡Añade este nuevo getter para la compatibilidad! ---
+    
     public Date getFechaAsUtilDate() {
         if (this.fecha == null) {
             return null;
@@ -52,7 +52,7 @@ public class Salida {
         // Convertimos LocalDate a java.util.Date usando la zona horaria por defecto del sistema.
         return Date.from(this.fecha.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
-    // --------------------------------------------------------
+    
 
     public double getMonto() {
         return monto;
@@ -79,7 +79,7 @@ public class Salida {
         this.registradoPor = registradoPor;
     }
 
-    // --- NUEVOS Getters y Setters para los nombres ---
+    
     public String getNombreMinisterio() {
         return nombreMinisterio;
     }

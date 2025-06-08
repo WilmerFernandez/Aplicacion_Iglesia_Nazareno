@@ -29,14 +29,14 @@ public class DiezmoDAOImpl implements DiezmoDAO {
             System.out.println("  Fecha: " + diezmo.getFecha());
             System.out.println("  Monto: " + diezmo.getMonto());
             System.out.println("  ID Registrado Por: " + diezmo.getIdRegistradoPor());
-            // Se elimina la impresión del valor de ofrenda
+            
 
             ps.setInt(1, diezmo.getIdFeligres());
             ps.setDate(2, Date.valueOf(diezmo.getFecha()));
             ps.setDouble(3, diezmo.getMonto());
             ps.setInt(4, diezmo.getIdRegistradoPor());
 
-            // Se elimina el código para el manejo de la ofrenda
+            
             int filasAfectadas = ps.executeUpdate();
             resultado = filasAfectadas > 0;
 
@@ -65,7 +65,7 @@ public class DiezmoDAOImpl implements DiezmoDAO {
                 Diezmo d = new Diezmo();
                 d.setId(rs.getInt("ID_Diezmo"));
                 d.setIdFeligres(rs.getInt("ID_Feligres"));
-                d.setNombreFeligres(rs.getString("Nombre") + " " + rs.getString("Apellido")); // Asegúrate de que tu modelo `Diezmo` tenga este campo o método
+                d.setNombreFeligres(rs.getString("Nombre") + " " + rs.getString("Apellido")); 
                 d.setFecha(rs.getDate("Fecha").toLocalDate());
                 d.setMonto(rs.getDouble("Monto"));
                 d.setIdRegistradoPor(rs.getInt("Registrado_Por"));
@@ -78,7 +78,7 @@ public class DiezmoDAOImpl implements DiezmoDAO {
         return lista;
     }
 
-    // En DiezmoDAOImpl.java
+    
     @Override
     public double obtenerTotalDiezmos() throws SQLException {
         double total = 0.0;

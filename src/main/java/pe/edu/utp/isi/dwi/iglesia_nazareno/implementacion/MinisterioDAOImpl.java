@@ -3,7 +3,7 @@ package pe.edu.utp.isi.dwi.iglesia_nazareno.implementacion;
 
 import pe.edu.utp.isi.dwi.iglesia_nazareno.DAO.MinisterioDAO;
 import pe.edu.utp.isi.dwi.iglesia_nazareno.model.Ministerio;
-import pe.edu.utp.isi.dwi.iglesia_nazareno.DAO.BDConnection; // Tu clase de conexión a la BD
+import pe.edu.utp.isi.dwi.iglesia_nazareno.DAO.BDConnection; 
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Timestamp; // Para manejar la fecha de registro si es Timestamp en DB
+import java.sql.Timestamp; 
 
 public class MinisterioDAOImpl implements MinisterioDAO {
 
@@ -29,9 +29,9 @@ public class MinisterioDAOImpl implements MinisterioDAO {
                 ministerio.setIdMinisterio(rs.getInt("ID_Ministerio"));
                 ministerio.setNombreMinisterio(rs.getString("Nombre_Ministerio"));
 
-                // Asumiendo que Fecha_Registro es TIMESTAMP en tu DB
+                
                 Timestamp fechaRegistroDb = rs.getTimestamp("Fecha_Registro");
-                ministerio.setFechaRegistro(fechaRegistroDb); // Tu modelo Ministerio ya usa Timestamp
+                ministerio.setFechaRegistro(fechaRegistroDb); 
 
                 ministerios.add(ministerio);
             }
@@ -42,9 +42,5 @@ public class MinisterioDAOImpl implements MinisterioDAO {
         return ministerios;
     }
 
-    // Si tienes otros métodos en MinisterioDAO, impementa aquí:
-    // @Override
-    // public boolean insertar(Ministerio ministerio) throws SQLException { ... }
-    // @Override
-    // public Ministerio obtenerPorId(int id) throws SQLException { ... }
+   
 }

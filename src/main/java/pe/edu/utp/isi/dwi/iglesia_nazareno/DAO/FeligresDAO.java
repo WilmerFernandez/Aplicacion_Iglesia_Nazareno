@@ -6,6 +6,6 @@ import java.util.List;
 public interface FeligresDAO {
     boolean insertar(Feligres feligres);
     List<Feligres> listarTodos();
-    // **NUEVO MÉTODO:**
+
     List<Feligres> buscarPorNombre(String nombre); 
 }

@@ -13,14 +13,14 @@ public class Ofrenda {
     private double monto;
     private int idMinisterio; // ID del ministerio asociado a la ofrenda
     private int idUsuarioRegistrador; // ID del usuario que registra la ofrenda
-    private String nombreMinisterio; // NUEVO: Para el nombre del ministerio
-    private String nombreUsuarioRegistrador; // NUEVO: Para el nombre del usuario que registró
+    private String nombreMinisterio; // Para el nombre del ministerio
+    private String nombreUsuarioRegistrador; //  Para el nombre del usuario que registró
 
     public Ofrenda() {
         // Constructor por defecto
     }
 
-    // Puedes añadir un constructor con todos los campos si lo necesitas
+   
     public Ofrenda(int id, LocalDate fecha, double monto, int idMinisterio, int idUsuarioRegistrador) {
         this.id = id;
         this.fecha = fecha;
@@ -47,7 +47,7 @@ public class Ofrenda {
         this.fecha = fecha;
     }
 
-    // --- ¡Añade este nuevo getter! ---
+    
     public Date getFechaAsUtilDate() {
         if (this.fecha == null) {
             return null;
@@ -66,7 +66,7 @@ public class Ofrenda {
         this.monto = monto;
     }
 
-    // --- Nuevos Getters y Setters para idMinisterio y idUsuarioRegistrador ---
+    
 
     public int getIdMinisterio() {
         return idMinisterio;
@@ -84,7 +84,7 @@ public class Ofrenda {
         this.idUsuarioRegistrador = idUsuarioRegistrador;
     }
     
-    // --- NUEVOS Getters y Setters para los nombres ---
+    
     public String getNombreMinisterio() {
         return nombreMinisterio;
     }

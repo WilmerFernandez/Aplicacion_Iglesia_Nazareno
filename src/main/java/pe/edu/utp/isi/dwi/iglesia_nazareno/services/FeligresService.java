@@ -22,9 +22,8 @@ public class FeligresService {
         return feligresDAO.listarTodos();
     }
     
-    // **NUEVO MÉTODO EN EL SERVICE:**
+    
     public List<Feligres> buscarFeligresesPorNombre(String nombre) {
-        // Delega la búsqueda al DAO
         return feligresDAO.buscarPorNombre(nombre);
     }
 }

@@ -93,7 +93,7 @@ public class ExportarReporteMinisterioExcelServlet extends HttpServlet {
         saldoRow.createCell(0).setCellValue("Total en Caja");
         Cell saldoCell = saldoRow.createCell(1);
         saldoCell.setCellValue(reporte.getTotalEnCaja());
-        saldoCell.setCellStyle(currencyStyle); // Podrías usar un estilo en negrita aquí si lo deseas
+        saldoCell.setCellStyle(currencyStyle); 
 
         // Autoajustar columnas
         sheet.autoSizeColumn(0);

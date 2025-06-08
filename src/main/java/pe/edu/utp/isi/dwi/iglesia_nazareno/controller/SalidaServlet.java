@@ -40,7 +40,7 @@ public class SalidaServlet extends HttpServlet {
         validJspPaths.put("registrarSalidaMNI", "/WEB-INF/vistas/registrarSalidaMNI.jsp");
         validJspPaths.put("registrarSalidaDNI", "/WEB-INF/vistas/registrarSalidaDNI.jsp");
 
-        // **************** IMPORTANTE: AÑADIR LAS ASOCIACIONES DE JSP A ID DE MINISTERIO ****************
+        
         jspNameToMinisterioId.put("registrarSalida", 1);   
         jspNameToMinisterioId.put("registrarSalidaJNI", 2);
         jspNameToMinisterioId.put("registrarSalidaMNI", 3);  
@@ -57,16 +57,16 @@ public class SalidaServlet extends HttpServlet {
         String requestedForm = request.getParameter("form");
         
         String targetJsp;
-        int idMinisterioActual = 1; // Default a ID 1 (Iglesia) si no se especifica o no se encuentra
+        int idMinisterioActual = 1; 
         if (requestedForm != null && validJspPaths.containsKey(requestedForm)) {
             targetJsp = validJspPaths.get(requestedForm);
-            // Si el requestedForm tiene una asociación de ministerio, úsala.
+            
             if (jspNameToMinisterioId.containsKey(requestedForm)) {
                 idMinisterioActual = jspNameToMinisterioId.get(requestedForm);
             }
         } else {
-            targetJsp = validJspPaths.get("registrarSalida"); // JSP por defecto
-            // Usar el ID del JSP por defecto si existe en el mapa
+            targetJsp = validJspPaths.get("registrarSalida"); 
+            
             if (jspNameToMinisterioId.containsKey("registrarSalida")) {
                 idMinisterioActual = jspNameToMinisterioId.get("registrarSalida");
             }
@@ -80,11 +80,8 @@ public class SalidaServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
-        // Este jspNameAfterPost es CRÍTICO y debe venir CORRECTAMENTE de cada JSP
         String jspNameAfterPost = request.getParameter("jspName"); 
 
-        // Si jspNameAfterPost es nulo (ej. el campo oculto no se envió), o no se encuentra en el mapa,
-        // se usará 1 (Iglesia) como ID por defecto.
         int idMinisterioAsociado = jspNameToMinisterioId.getOrDefault(jspNameAfterPost, 1);
 
         if ("registrar".equalsIgnoreCase(action)) {
@@ -116,18 +113,11 @@ public class SalidaServlet extends HttpServlet {
                 }
                 int idUsuarioRegistrador = usuarioLogueado.getIdUsuario();
 
-                // LÓGICA DE FONDOS AJUSTADA POR MINISTERIO
-                // Para esto, necesitarías el 'calcularTotalDiezmosPorMinisterio' y 'calcularTotalOfrendasPorMinisterio'
-                // que habíamos discutido antes.
-                // Si aún no los tienes implementados o los Diezmos son globales, ajusta aquí.
-                // Ejemplo con lógica global para diezmos y por ministerio para ofrendas (como tu código original):
+                
                 double totalDiezmos = diezmoService.calcularTotalDiezmos(); // Suma todos los diezmos (si son globales)
                 double ofrendasDelMinisterio = ofrendaService.calcularTotalOfrendasPorMinisterio(idMinisterioAsociado); // Ofrendas del ministerio específico
                 double ingresosDisponibles = totalDiezmos + ofrendasDelMinisterio; // Combina ambos
 
-                // Si Diezmos también son por ministerio, sería:
-                // double diezmosDelMinisterio = diezmoService.calcularTotalDiezmosPorMinisterio(idMinisterioAsociado);
-                // double ingresosDisponibles = diezmosDelMinisterio + ofrendasDelMinisterio;
 
 
                 if (montoSalida > ingresosDisponibles) {
@@ -144,7 +134,7 @@ public class SalidaServlet extends HttpServlet {
                 salida.setFecha(fecha);
                 salida.setMonto(montoSalida);
                 salida.setDescripcion(descripcion);
-                salida.setIdMinisterio(idMinisterioAsociado); // ¡Aquí se usa el ID del ministerio correcto!
+                salida.setIdMinisterio(idMinisterioAsociado); 
                 salida.setRegistradoPor(idUsuarioRegistrador);
 
                 boolean registrado = salidaService.registrarSalida(salida);

@@ -24,6 +24,5 @@ public interface DiezmoDAO {
      */
     List<Diezmo> listarTodos();
 
-    // En DiezmoDAO.java
     double obtenerTotalDiezmos() throws SQLException;
 }

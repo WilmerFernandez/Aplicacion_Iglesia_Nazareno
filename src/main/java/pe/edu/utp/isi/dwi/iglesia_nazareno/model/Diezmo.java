@@ -12,8 +12,8 @@ public class Diezmo {
     private LocalDate fecha;
     private double monto;
     private int idRegistradoPor; // Campo para almacenar el ID del usuario que registró
-    private String nombreFeligres; // NUEVO: Para el nombre completo del feligrés
-    private String nombreUsuarioRegistrador; // NUEVO: Para el nombre del usuario que registró
+    private String nombreFeligres; //  Para el nombre completo del feligrés
+    private String nombreUsuarioRegistrador; //  Para el nombre del usuario que registró
 
     public Diezmo() {}
 
@@ -35,13 +35,12 @@ public class Diezmo {
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
-     // Agrega este nuevo getter para compatibilidad con JSTL
+     
     public Date getFechaAsUtilDate() {
         if (this.fecha == null) {
             return null;
         }
         // Convierte LocalDate a java.util.Date.
-        // Necesitas especificar una ZoneId para esta conversión.
         return Date.from(this.fecha.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
     

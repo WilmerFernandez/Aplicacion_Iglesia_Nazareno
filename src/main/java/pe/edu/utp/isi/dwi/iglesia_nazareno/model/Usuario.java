@@ -13,7 +13,7 @@ public class Usuario implements Serializable {
     private String apellido;
     private String correo;
     private String usuario;
-    private String contrasena; // Debe almacenarse hasheada
+    private String contrasena; 
     private String rol;
     private String estado;
 

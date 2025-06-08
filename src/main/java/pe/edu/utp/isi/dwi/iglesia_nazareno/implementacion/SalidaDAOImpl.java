@@ -2,14 +2,14 @@ package pe.edu.utp.isi.dwi.iglesia_nazareno.implementacion;
 
 import pe.edu.utp.isi.dwi.iglesia_nazareno.DAO.SalidaDAO;
 import pe.edu.utp.isi.dwi.iglesia_nazareno.model.Salida;
-import pe.edu.utp.isi.dwi.iglesia_nazareno.DAO.BDConnection; // Tu clase de conexión a la BD
+import pe.edu.utp.isi.dwi.iglesia_nazareno.DAO.BDConnection; 
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp; // Para manejar las columnas TIMESTAMP de la DB
-import java.time.LocalDateTime; // Para convertir LocalDate a LocalDateTime y luego a Timestamp
+import java.sql.Timestamp; 
+import java.time.LocalDateTime; 
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class SalidaDAOImpl implements SalidaDAO {
 
         } catch (SQLException e) {
             System.err.println("Error insertando salida: " + e.getMessage());
-            throw e; // Relanzar la excepción para que sea manejada por el servicio
+            throw e; 
         }
         return resultado;
     }

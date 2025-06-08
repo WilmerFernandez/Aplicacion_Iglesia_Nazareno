@@ -21,6 +21,6 @@ public interface OfrendaDAO {
      * @return Lista de Ofrenda.
      */
     List<Ofrenda> listarTodos();
-    List<Ofrenda> listarOfrendasPorMinisterio(int idMinisterio) throws SQLException; // <-- NUEVO MÉTODO
-    double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException; // <-- NUEVO MÉTODO 
+    List<Ofrenda> listarOfrendasPorMinisterio(int idMinisterio) throws SQLException; 
+    double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException; 
 }

@@ -51,10 +51,10 @@ public class ReporteServlet extends HttpServlet {
         }
     }
 
-    // Usualmente los reportes no tienen doPost a menos que sea para filtros o descargas
+   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response); // Por simplicidad, un POST a este servlet solo recargará el GET
+        doGet(request, response); 
     }
 }

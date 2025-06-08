@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.sql.Date; // Importación para java.sql.Date
+import java.sql.Date; 
 
 import java.time.LocalDateTime;
 
@@ -50,10 +50,10 @@ public class ListaFeligresServlet extends HttpServlet {
         private int id;
         private String nombre;
         private String apellido;
-        private java.util.Date fechaNacimiento; // Sigue siendo java.util.Date aquí, lo cual aún requiere conversión desde LocalDate del modelo
+        private java.util.Date fechaNacimiento; 
         private String estado;
         private String telefono;
-        private String direccion; // Campo 'direccion'
+        private String direccion; 
         private LocalDateTime fechaRegistro;
 
         // Constructor actualizado
@@ -61,8 +61,6 @@ public class ListaFeligresServlet extends HttpServlet {
             this.id = feligres.getId();
             this.nombre = feligres.getNombre();
             this.apellido = feligres.getApellido();
-            // Recordatorio: esta línea podría dar un error de compilación
-            // si feligres.getFechaNacimiento() devuelve LocalDate y no java.sql.Date
             this.fechaNacimiento = Date.valueOf(feligres.getFechaNacimiento());
             this.estado = feligres.getEstado();
             this.telefono = feligres.getTelefono();

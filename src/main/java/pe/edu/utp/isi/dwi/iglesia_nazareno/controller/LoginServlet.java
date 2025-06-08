@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("usuarioLogueado", user);
 
             // Verifica el rol del usuario y redirige al dashboard correspondiente
-            String rol = user.getRol();  // Asumiendo que tienes un método getRol() en tu clase Usuario
+            String rol = user.getRol();  
 
             switch (rol) {
                 case "pastor":

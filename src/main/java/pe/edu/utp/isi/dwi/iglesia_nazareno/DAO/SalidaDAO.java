@@ -17,11 +17,11 @@ public interface SalidaDAO {
      * @return Lista de Salidas del ministerio.
      * @throws SQLException si ocurre un error de acceso a la base de datos.
      */
-    List<Salida> listarSalidasPorMinisterio(int idMinisterio) throws SQLException; // <-- NUEVO MÉTODO
+    List<Salida> listarSalidasPorMinisterio(int idMinisterio) throws SQLException; 
     
     
     double obtenerTotalSalidas() throws SQLException; 
     
-// Nuevo método para sumar ofrendas por ministerio
+//  método para sumar ofrendas por ministerio
     double obtenerTotalSalidasPorMinisterio(int idMinisterio) throws SQLException;
 }

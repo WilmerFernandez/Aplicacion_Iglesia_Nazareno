@@ -7,8 +7,6 @@ import java.sql.SQLException;
 
 
 public interface MinisterioDAO {
-    List<Ministerio> listarTodos() throws SQLException; // O throws Exception
-    // boolean insertar(Ministerio ministerio) throws SQLException;
-    // Ministerio obtenerPorId(int id) throws SQLException;
-    // etc.
+    List<Ministerio> listarTodos() throws SQLException; 
+   
 }

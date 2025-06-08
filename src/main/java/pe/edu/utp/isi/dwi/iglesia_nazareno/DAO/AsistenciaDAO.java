@@ -20,5 +20,4 @@ public interface AsistenciaDAO {
      */
     List<Asistencia> listarAsistencias() throws SQLException;
 
-    // Puedes añadir más métodos como obtener por ID, actualizar, eliminar, etc., si los necesitas.
 }

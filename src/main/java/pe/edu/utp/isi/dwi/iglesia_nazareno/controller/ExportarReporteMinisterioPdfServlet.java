@@ -7,7 +7,7 @@ import pe.edu.utp.isi.dwi.iglesia_nazareno.services.ReporteMinisteriosService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType0Font; // Importar PDType0Font para TTF
+import org.apache.pdfbox.pdmodel.font.PDType0Font; 
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ public class ExportarReporteMinisterioPdfServlet extends HttpServlet {
 
     private static final DecimalFormat CURRENCY_FORMAT = new DecimalFormat("0.00");
 
-    // Declarar las fuentes que cargaremos
+   
     private PDType0Font fontRegular;
     private PDType0Font fontBold;
 
@@ -55,8 +55,7 @@ public class ExportarReporteMinisterioPdfServlet extends HttpServlet {
         }
     }
 
-    // El método destroy() no es estrictamente necesario aquí ya que PDDocument.close()
-    // cierra las fuentes asociadas.
+  
     @Override
     public void destroy() {
         super.destroy();
@@ -223,13 +222,9 @@ public class ExportarReporteMinisterioPdfServlet extends HttpServlet {
         if (texto == null) {
             texto = "";
         }
-        // Importante: Eliminar ambos \r (retorno de carro) y \n (salto de línea)
-        // de las cadenas antes de mostrarlas.
-        // Si necesitas soporte para saltos de línea dentro de una celda,
-        // la lógica sería más compleja (dividir el texto y dibujar múltiples líneas).
-        // Para evitar el error de codificación, los eliminamos/reemplazamos.
+       
         texto = texto.replace("\r", "");
-        texto = texto.replace("\n", " "); // Reemplazar con espacio para que no se pegue el texto
+        texto = texto.replace("\n", " "); 
 
         contentStream.beginText();
         contentStream.newLineAtOffset(x, y);
@@ -255,7 +250,7 @@ public class ExportarReporteMinisterioPdfServlet extends HttpServlet {
             escribirTexto(contentStream, headers[i], currentX, yPosition - rowHeight + cellMargin);
             currentX += colWidths[i];
         }
-        contentStream.setFont(fontRegular, 10); // Volver a la fuente regular para el contenido de la tabla
+        contentStream.setFont(fontRegular, 10); 
         return yPosition - rowHeight;
     }
 

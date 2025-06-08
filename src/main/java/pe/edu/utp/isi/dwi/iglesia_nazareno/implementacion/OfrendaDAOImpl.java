@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class OfrendaDAOImpl implements OfrendaDAO {
 
-    // Se modificó la consulta para incluir ID_Ministerio y Registrado_Por
+    
     private static final String SQL_INSERT = "INSERT INTO Ofrenda (Fecha, Monto, ID_Ministerio, Registrado_Por) VALUES (?, ?, ?, ?)";
     private static final String SQL_SELECT_ALL = "SELECT ID_Ofrenda, Fecha, Monto, ID_Ministerio, Registrado_Por FROM Ofrenda"; // Especifica las columnas para mayor claridad
      private static final String SQL_SELECT_BY_MINISTERIO = "SELECT ID_Ofrenda, Fecha, Monto, ID_Ministerio, Registrado_Por FROM Ofrenda WHERE ID_Ministerio = ?";
@@ -26,7 +26,6 @@ public class OfrendaDAOImpl implements OfrendaDAO {
         try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(SQL_INSERT)) {
 
             // 1. Convertir LocalDate a Timestamp para la columna 'Fecha' (TIMESTAMP en DB)
-            // Asume que quieres el inicio del día para la fecha de la ofrenda.
             LocalDateTime localDateTime = ofrenda.getFecha().atStartOfDay();
             ps.setTimestamp(1, Timestamp.valueOf(localDateTime));
 
@@ -113,7 +112,7 @@ public class OfrendaDAOImpl implements OfrendaDAO {
     
     
     @Override
-    public double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException { // <-- IMPLEMENTACIÓN DEL NUEVO MÉTODO
+    public double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException { 
         double total = 0.0;
         try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(SQL_SUM_BY_MINISTERIO)) {
             ps.setInt(1, idMinisterio);

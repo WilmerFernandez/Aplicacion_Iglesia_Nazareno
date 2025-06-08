@@ -30,7 +30,7 @@ public class ReporteMinisteriosServlet extends HttpServlet {
             if (idMinisterioStr != null && !idMinisterioStr.isEmpty()) {
                 idMinisterio = Integer.parseInt(idMinisterioStr);
 
-                // Validar que el ID del ministerio sea uno de los esperados
+              
                 if (idMinisterio < 1 || idMinisterio > 4) { // Asumiendo 1 para General, 2 JNI, 3 MNI, 4 DNI
                     throw new NumberFormatException("ID de ministerio fuera del rango esperado.");
                 }
@@ -60,7 +60,7 @@ public class ReporteMinisteriosServlet extends HttpServlet {
                 }
             } else {
                 request.setAttribute("mensajeError", "El ID de ministerio no fue proporcionado.");
-                destinoJSP = "/WEB-INF/vistas/errorGenerico.jsp"; // O a un JSP para seleccionar ministerio si es la primera vez
+                destinoJSP = "/WEB-INF/vistas/errorGenerico.jsp"; 
             }
         } catch (NumberFormatException e) {
             System.err.println("ID de Ministerio inválido: " + idMinisterioStr + " - " + e.getMessage());
@@ -78,9 +78,7 @@ public class ReporteMinisteriosServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Para este caso de reportes, normalmente se usaría solo GET.
-        // Si hay formularios en los reportes que envían datos, se manejarían aquí,
-        // pero para la funcionalidad de reporte puro, doGet es suficiente.
+       
         doGet(request, response);
     }
 }

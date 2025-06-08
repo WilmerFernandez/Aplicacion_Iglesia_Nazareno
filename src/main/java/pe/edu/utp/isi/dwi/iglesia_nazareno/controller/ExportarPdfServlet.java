@@ -25,8 +25,8 @@ public class ExportarPdfServlet extends HttpServlet {
     try (PDDocument document = new PDDocument()) {
         // Obtener datos frescos
         List<Diezmo> diezmos = reporteService.listarTodosDiezmos();
-        List<Ofrenda> ofrendas = reporteService.listarTodasOfrendas();
-        List<Salida> salidas = reporteService.listarTodasSalidas();
+        List<Ofrenda> ofrendas = reporteService.listarOfrendasPorMinisterio();
+        List<Salida> salidas = reporteService.listarSalidasPorMinisterio();
         ReporteFinanciero reporte = reporteService.generarReporteFinancieroConsolidado();
 
         // Crear primera página

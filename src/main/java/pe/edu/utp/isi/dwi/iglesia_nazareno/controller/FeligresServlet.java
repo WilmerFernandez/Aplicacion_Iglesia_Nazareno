@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDate;
-// import java.time.LocalDateTime; // Ya no es necesario si la BD maneja Fecha_Registro
+
 
 @WebServlet(name = "FeligresServlet", urlPatterns = {"/feligres"})
 public class FeligresServlet extends HttpServlet {
@@ -30,18 +30,17 @@ public class FeligresServlet extends HttpServlet {
             String apellido = request.getParameter("apellido");
             LocalDate fechaNacimiento = LocalDate.parse(request.getParameter("fechaNacimiento"));
             String estado = request.getParameter("estado");
-            String telefono = request.getParameter("telefono");   // <-- Obtener Telefono
-            String direccion = request.getParameter("direccion"); // <-- Obtener Direccion
+            String telefono = request.getParameter("telefono");   
+            String direccion = request.getParameter("direccion"); 
 
             Feligres f = new Feligres();
             f.setNombre(nombre);
             f.setApellido(apellido);
             f.setFechaNacimiento(fechaNacimiento);
             f.setEstado(estado);
-            f.setTelefono(telefono);     // <-- Setear Telefono
-            f.setDireccion(direccion);   // <-- Setear Direccion
-            // No necesitas setear f.setFechaRegistro() aquí,
-            // ya que la base de datos se encarga automáticamente.
+            f.setTelefono(telefono);     
+            f.setDireccion(direccion);   
+           
 
             boolean registrado = feligresService.registrarFeligres(f);
 
@@ -52,8 +51,7 @@ public class FeligresServlet extends HttpServlet {
             }
 
         } catch (Exception e) {
-            // Es buena práctica loguear la excepción completa para depuración
-            e.printStackTrace(); // Esto imprimirá el stack trace en la consola del servidor
+            e.printStackTrace(); 
             request.setAttribute("error", "Error interno al procesar el registro: " + e.getMessage());
         }
 

@@ -25,14 +25,13 @@ public class FeligresDAOImpl implements FeligresDAO {
             ps.setString(4, feligres.getEstado());
             ps.setString(5, feligres.getTelefono());
             ps.setString(6, feligres.getDireccion());
-            // ¡¡¡IMPORTANTE!!! Elimina la línea siguiente:
-            // ps.setTimestamp(7, Timestamp.valueOf(feligres.getFechaRegistro()));
+            
 
             resultado = ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.err.println("Error insertando feligrés: " + e.getMessage());
-            // Opcional: lanzar una excepción personalizada o loguear con más detalle
+            
         }
         return resultado;
     }
@@ -68,7 +67,7 @@ public class FeligresDAOImpl implements FeligresDAO {
         List<Feligres> lista = new ArrayList<>();
 
         if (nombre == null) {
-            nombre = ""; // Asegura que no sea null para el LIKE
+            nombre = ""; 
         }
 
         try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_NAME)) {
@@ -88,11 +87,11 @@ public class FeligresDAOImpl implements FeligresDAO {
                     f.setFechaRegistro(rs.getTimestamp("Fecha_Registro").toLocalDateTime());
                     lista.add(f);
                 }
-            } // El try-with-resources cerrará el ResultSet automáticamente
+            } 
 
         } catch (SQLException e) {
             System.err.println("Error buscando feligrés por nombre: " + e.getMessage());
-            // Opcional: lanzar una excepción personalizada o loguear con más detalle
+           
         }
         return lista;
     }
