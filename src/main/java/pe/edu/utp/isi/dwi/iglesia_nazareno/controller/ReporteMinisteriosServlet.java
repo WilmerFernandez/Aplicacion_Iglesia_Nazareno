@@ -31,7 +31,7 @@ public class ReporteMinisteriosServlet extends HttpServlet {
                 idMinisterio = Integer.parseInt(idMinisterioStr);
 
                 // Validar que el ID del ministerio sea uno de los esperados
-                if (idMinisterio < 2 || idMinisterio > 4) { // Asumiendo 1 para General, 2 JNI, 3 MNI, 4 DNI
+                if (idMinisterio < 1 || idMinisterio > 4) { // Asumiendo 1 para General, 2 JNI, 3 MNI, 4 DNI
                     throw new NumberFormatException("ID de ministerio fuera del rango esperado.");
                 }
 
@@ -40,6 +40,9 @@ public class ReporteMinisteriosServlet extends HttpServlet {
 
                 // Determinar a qué JSP redirigir basándose en el ID del ministerio
                 switch (idMinisterio) {
+                    case 1: // JNI
+                        destinoJSP = "/WEB-INF/vistas/reporteIGLESIA.jsp";
+                        break;
                     case 2: // JNI
                         destinoJSP = "/WEB-INF/vistas/reporteJNI.jsp";
                         break;

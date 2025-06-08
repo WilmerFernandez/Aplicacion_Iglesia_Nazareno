@@ -29,8 +29,8 @@ public class ReporteServlet extends HttpServlet {
         try {
             // Listar todos los diezmos, ofrendas y salidas
             List<Diezmo> listaDiezmos = reporteService.listarTodosDiezmos();
-            List<Ofrenda> listaOfrendas = reporteService.listarTodasOfrendas();
-            List<Salida> listaSalidas = reporteService.listarTodasSalidas();
+            List<Ofrenda> listaOfrendas = reporteService.listarOfrendasPorMinisterio();
+            List<Salida> listaSalidas = reporteService.listarSalidasPorMinisterio();
 
             // Generar el reporte consolidado (totales y saldo)
             ReporteFinanciero resumenFinanciero = reporteService.generarReporteFinancieroConsolidado();
