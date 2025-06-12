@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Tesorería - Iglesia</title>
+    <title>Dashboard Tesorería MNI</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -106,6 +106,7 @@
         <button onclick="cargar('asistencia?form=registrarAsistenciaMNI', this)">💵 Registrar Asistencia</button>
         <button onclick="cargar('salida?form=registrarSalidaMNI', this)">💸 Registrar Salidas</button>
         <button onclick="cargar('ReporteMinisteriosServlet?idMinisterio=3', this)">📊 Reportes Financieros</button>
+        <button onclick="cargar('listarAsistencias?idMinisterio=3', this)">Reporte de Asistencia</button>
         <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar sesión</button>
     </div>
 

@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Tesorería - Iglesia</title>
+    <title>Dashboard Secretaria</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -105,7 +105,7 @@
         <button onclick="cargar('registroFeligres.jsp', this)">Nuevo Feligres</button>
         <button onclick="cargar('listaFeligreses', this)">Lista de Feligres</button>
         <button onclick="cargar('asistencia?form=registrarAsistencia', this)">Registrar Asistencia</button>
-        <button onclick="cargar('', this)">Vacio</button>
+        <button onclick="cargar('listarAsistencias?idMinisterio=1', this)">Reporte de Asistencia</button>
         <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar sesión</button>
     </div>
 

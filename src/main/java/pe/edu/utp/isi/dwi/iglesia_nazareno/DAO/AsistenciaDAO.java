@@ -19,5 +19,22 @@ public interface AsistenciaDAO {
      * @throws SQLException si ocurre un error de base de datos.
      */
     List<Asistencia> listarAsistencias() throws SQLException;
+    
+    /**
+     * Obtiene una lista de asistencias filtradas por ID_Ministerio.
+     * @param idMinisterio El ID del ministerio.
+     * @return Lista de asistencias correspondientes al ministerio.
+     * @throws SQLException si ocurre un error de base de datos.
+     */
+    List<Asistencia> listarAsistenciasPorMinisterio(int idMinisterio) throws SQLException;
+
+    /**
+     * Obtiene una lista de asistencias dentro de un rango de fechas.
+     * @param fechaInicio Fecha de inicio del rango.
+     * @param fechaFin Fecha de fin del rango.
+     * @return Lista de asistencias dentro del rango de fechas.
+     * @throws SQLException si ocurre un error de base de datos.
+     */
+    List<Asistencia> listarAsistenciasPorFecha(String fechaInicio, String fechaFin, int idMinisterio) throws SQLException;
 
 }

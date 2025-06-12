@@ -102,13 +102,12 @@
         </div>
 
         <div id="menu">
-            <button onclick="cargar('reporte', this)">Reportes Financieros</button>
-            <button onclick="cargar('', this)">Reporte de Asistencia</button>
-            <button onclick="cargar('', this)">Registrar de Salidas</button>
-            <button onclick="cargar('', this)">Entradas y Salidas MNI</button>
-            <button onclick="cargar('', this)">Entradas y Salidas DNI</button>
-            <button onclick="cargar('', this)">Entradas y Salidas JNI</button>
-            <button onclick="cargar('', this)">Lista de Feligreses</button>
+            <button onclick="cargar('reporte', this)">Entradas y Salidas IGLESIA</button>
+            <button onclick="cargar('ReporteMinisteriosServlet?idMinisterio=3', this)">Entradas y Salidas MNI</button>
+            <button onclick="cargar('ReporteMinisteriosServlet?idMinisterio=4', this)">Entradas y Salidas DNI</button>
+            <button onclick="cargar('ReporteMinisteriosServlet?idMinisterio=2', this)">Entradas y Salidas JNI</button>
+            <button onclick="cargar('listaFeligreses', this)">Lista de Feligreses</button>
+            <button onclick="cargar('', this)">Reporte se Asistencia</button>
             <button onclick="cargar('registroUsuario.jsp', this)">Nuevo Usuario</button>
             <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar sesión</button>
         </div>

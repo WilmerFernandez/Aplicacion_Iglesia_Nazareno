@@ -122,7 +122,7 @@
         
         function cerrarSesion() {
             if(confirm('¿Está seguro que desea cerrar la sesión?')) {
-                window.location.href = 'logout'; // Ajusta esta URL
+                window.location.href = 'logout'; 
             }
         }
         

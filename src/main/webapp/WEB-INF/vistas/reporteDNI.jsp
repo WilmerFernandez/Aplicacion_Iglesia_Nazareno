@@ -26,7 +26,7 @@
         </style>
     </head>
     <body>
-        <div class="container mt-5">
+        <div class="container mt-5 text-center">
             <h1 class="mb-4">Reporte Financiero para: ${reporte.nombreMinisterio}</h1>
 
             <div class="total-summary text-center mb-5">

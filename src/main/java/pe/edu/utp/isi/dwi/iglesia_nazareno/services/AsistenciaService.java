@@ -35,4 +35,48 @@ public class AsistenciaService {
             return new ArrayList<>();
         }
     }
+    
+    public List<Asistencia> listarAsistenciasPorMinisterio(int idMinisterio) {
+        try {
+            return asistenciaDAO.listarAsistenciasPorMinisterio(idMinisterio);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public List<Asistencia> listarAsistenciasPorFecha(String fechaInicio, String fechaFin, int idMinisterio) {
+        try {
+            List<Asistencia> asistenciasPorFecha = asistenciaDAO.listarAsistenciasPorFecha(fechaInicio, fechaFin, idMinisterio);
+            return asistenciasPorFecha;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    public double[] calcularPromedios(List<Asistencia> asistencias) {
+        int totalAdultos = 0, totalJovenes = 0, totalAdolescentes = 0, totalNinos = 0;
+        int totalAsistencias = asistencias.size();
+
+        for (Asistencia asistencia : asistencias) {
+            totalAdultos += asistencia.getCantidadAdultos();
+            totalJovenes += asistencia.getCantidadJovenes();
+            totalAdolescentes += asistencia.getCantidadAdolescentes();
+            totalNinos += asistencia.getCantidadNinos();
+        }
+
+        double promedioAdultos = totalAsistencias > 0 ? (double) totalAdultos / totalAsistencias : 0;
+        double promedioJovenes = totalAsistencias > 0 ? (double) totalJovenes / totalAsistencias : 0;
+        double promedioAdolescentes = totalAsistencias > 0 ? (double) totalAdolescentes / totalAsistencias : 0;
+        double promedioNinos = totalAsistencias > 0 ? (double) totalNinos / totalAsistencias : 0;
+        
+        // Promedio total de todos los grupos
+        double promedioTotal = (promedioAdultos + promedioJovenes + promedioAdolescentes + promedioNinos) / 4;
+
+        return new double[] {promedioAdultos, promedioJovenes, promedioAdolescentes, promedioNinos, promedioTotal};
+    }
+
+    
+
 }

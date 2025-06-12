@@ -6,6 +6,7 @@ public class Asistencia {
     private int idAsistencia;
     private Timestamp fecha;
     private int idMinisterio;
+    private int nombreMinisterio;
     private int cantidadAdultos;
     private int cantidadJovenes;
     private int cantidadAdolescentes;
@@ -76,4 +77,14 @@ public class Asistencia {
     public void setRegistradoPor(int registradoPor) {
         this.registradoPor = registradoPor;
     }
+
+    public int getNombreMinisterio() {
+        return nombreMinisterio;
+    }
+
+    public void setNombreMinisterio(int nombreMinisterio) {
+        this.nombreMinisterio = nombreMinisterio;
+    }
+    
+    
 }
