@@ -14,10 +14,9 @@ import java.util.List;
  */
 public class OfrendaDAOImpl implements OfrendaDAO {
 
-    
     private static final String SQL_INSERT = "INSERT INTO Ofrenda (Fecha, Monto, ID_Ministerio, Registrado_Por) VALUES (?, ?, ?, ?)";
     private static final String SQL_SELECT_ALL = "SELECT ID_Ofrenda, Fecha, Monto, ID_Ministerio, Registrado_Por FROM Ofrenda"; // Especifica las columnas para mayor claridad
-     private static final String SQL_SELECT_BY_MINISTERIO = "SELECT ID_Ofrenda, Fecha, Monto, ID_Ministerio, Registrado_Por FROM Ofrenda WHERE ID_Ministerio = ?";
+    private static final String SQL_SELECT_BY_MINISTERIO = "SELECT ID_Ofrenda, Fecha, Monto, ID_Ministerio, Registrado_Por FROM Ofrenda WHERE ID_Ministerio = ?";
     private static final String SQL_SUM_BY_MINISTERIO = "SELECT SUM(Monto) AS Total FROM Ofrenda WHERE ID_Ministerio = ?"; // <-- NUEVA CONSULTA
 
     @Override
@@ -107,12 +106,9 @@ public class OfrendaDAOImpl implements OfrendaDAO {
         }
         return lista;
     }
-    
-    
-    
-    
+
     @Override
-    public double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException { 
+    public double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException {
         double total = 0.0;
         try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(SQL_SUM_BY_MINISTERIO)) {
             ps.setInt(1, idMinisterio);
@@ -127,4 +123,61 @@ public class OfrendaDAOImpl implements OfrendaDAO {
         }
         return total;
     }
+
+    public List<Ofrenda> listarPorFechas(String inicio, String fin, int idMinisterio) {
+        List<Ofrenda> lista = new ArrayList<>();
+        String sql = "SELECT * FROM ofrenda WHERE ID_Ministerio = ? AND DATE(Fecha) BETWEEN ? AND ?";
+
+        try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idMinisterio);
+            ps.setString(2, inicio);
+            ps.setString(3, fin);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Ofrenda o = new Ofrenda();
+                o.setId(rs.getInt("ID_Ofrenda"));
+
+                Timestamp ts = rs.getTimestamp("Fecha");
+                if (ts != null) {
+                    o.setFecha(ts.toLocalDateTime().toLocalDate());
+                }
+
+                o.setMonto(rs.getDouble("Monto"));
+                o.setIdMinisterio(rs.getInt("ID_Ministerio"));
+                o.setIdUsuarioRegistrador(rs.getInt("Registrado_Por"));
+                lista.add(o);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error listando ofrendas por fechas: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+   
+    public double obtenerTotalPorFechas(String inicio, String fin, int idMinisterio) {
+        double total = 0;
+        String sql = "SELECT SUM(Monto) as total FROM ofrenda WHERE ID_Ministerio = ? AND DATE(Fecha) BETWEEN ? AND ?";
+
+        try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idMinisterio);
+            ps.setString(2, inicio);
+            ps.setString(3, fin);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error sumando ofrendas por fechas: " + e.getMessage());
+        }
+
+        return total;
+    }
+
 }

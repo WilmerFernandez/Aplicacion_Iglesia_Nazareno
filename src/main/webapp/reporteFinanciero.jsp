@@ -215,9 +215,36 @@
                 <p>Resumen completo de ingresos y egresos</p>
             </div>
 
+            <!-- Formulario de búsqueda por fechas -->
+            <form method="post" action="${pageContext.request.contextPath}/reporte" class="summary-container" style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+                <div>
+                    <label for="fechaInicio"><strong>Desde:</strong></label><br />
+                    <input type="date" id="fechaInicio" name="fechaInicio" value="${fechaInicio}" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+
+                <div>
+                    <label for="fechaFin"><strong>Hasta:</strong></label><br />
+                    <input type="date" id="fechaFin" name="fechaFin" value="${fechaFin}" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+
+                <div style="margin-top: 18px;">
+                    <button type="submit" class="export-btn" style="background-color: #1a4f8a;">🔍 Buscar por fechas</button>
+                </div>
+
+                <c:if test="${not empty fechaInicio && not empty fechaFin}">
+                    <div style="margin-top: 18px;">
+                        <a href="${pageContext.request.contextPath}/reporte" class="export-btn pdf">↩ Mostrar todo</a>
+                    </div>
+                </c:if>
+            </form>
+
+
+
             <c:if test="${not empty error}">
                 <div class="message error">${error}</div>
             </c:if>
+
+
 
             <!-- Resumen Financiero en la parte superior -->
             <div class="summary-container">
@@ -249,16 +276,30 @@
 
                     <div class="export-buttons">
                         <form action="${pageContext.request.contextPath}/exportarExcel" method="post">
+                            <c:if test="${not empty fechaInicio}">
+                                <input type="hidden" name="fechaInicio" value="${fechaInicio}" />
+                            </c:if>
+                            <c:if test="${not empty fechaFin}">
+                                <input type="hidden" name="fechaFin" value="${fechaFin}" />
+                            </c:if>
                             <button type="submit" class="export-btn excel">
                                 📊 Exportar a Excel
                             </button>
                         </form>
+
                         <form action="${pageContext.request.contextPath}/exportarPdf" method="post">
+                            <c:if test="${not empty fechaInicio}">
+                                <input type="hidden" name="fechaInicio" value="${fechaInicio}" />
+                            </c:if>
+                            <c:if test="${not empty fechaFin}">
+                                <input type="hidden" name="fechaFin" value="${fechaFin}" />
+                            </c:if>
                             <button type="submit" class="export-btn pdf">
                                 📄 Exportar a PDF
                             </button>
                         </form>
                     </div>
+
 
                     <div class="saldo-total">
                         <h4>Saldo en Caja</h4>

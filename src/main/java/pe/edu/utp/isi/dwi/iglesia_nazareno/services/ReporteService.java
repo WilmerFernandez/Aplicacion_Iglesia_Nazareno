@@ -37,8 +37,7 @@ public class ReporteService {
     public List<Salida> listarTodasSalidas() throws Exception {
         return salidaDAO.listarTodos();
     }
-    
-    
+
     public List<Salida> listarSalidasPorMinisterio() throws SQLException {
         int idMinisterio = 1;  // ID del ministerio hardcodeado
         try {
@@ -50,7 +49,7 @@ public class ReporteService {
             throw e;  // Propagamos la excepción
         }
     }
-    
+
     public List<Ofrenda> listarOfrendasPorMinisterio() throws SQLException {
         int idMinisterio = 1;  // ID del ministerio hardcodeado
         try {
@@ -62,8 +61,7 @@ public class ReporteService {
             throw e;  // Propagamos la excepción
         }
     }
-    
-    
+
     public ReporteFinanciero generarReporteFinancieroConsolidado() throws Exception {
         ReporteFinanciero reporte = new ReporteFinanciero();
 
@@ -78,4 +76,30 @@ public class ReporteService {
 
         return reporte;
     }
+
+    
+    public List<Diezmo> listarDiezmosPorFechas(String inicio, String fin) throws Exception {
+        return diezmoDAO.listarPorFechas(inicio, fin);
+    }
+
+    public List<Ofrenda> listarOfrendasPorFechas(String inicio, String fin) throws Exception {
+        return ofrendaDAO.listarPorFechas(inicio, fin, 1); // Ministerio iglesia
+    }
+
+    public List<Salida> listarSalidasPorFechas(String inicio, String fin) throws Exception {
+        return salidaDAO.listarPorFechas(inicio, fin, 1); // Ministerio iglesia
+    }
+
+    public ReporteFinanciero generarResumenPorFechas(String inicio, String fin) throws Exception {
+        ReporteFinanciero r = new ReporteFinanciero();
+        double totalD = diezmoDAO.obtenerTotalPorFechas(inicio, fin);
+        double totalO = ofrendaDAO.obtenerTotalPorFechas(inicio, fin, 1);
+        double totalS = salidaDAO.obtenerTotalPorFechas(inicio, fin, 1);
+        r.setTotalDiezmos(totalD);
+        r.setTotalOfrendasIglesia(totalO);
+        r.setTotalSalidas(totalS);
+        r.setSaldoCaja(totalD + totalO - totalS);
+        return r;
+    }
+
 }

@@ -8,20 +8,29 @@ import java.util.List;
  * Interfaz para las operaciones de acceso a datos de la entidad Salida.
  */
 public interface SalidaDAO {
+
     boolean insertar(Salida salida) throws SQLException;
+
     List<Salida> listarTodos() throws SQLException;
-    
+
     /**
      * Lista todas las salidas registradas para un ministerio específico.
+     *
      * @param idMinisterio El ID del ministerio.
      * @return Lista de Salidas del ministerio.
      * @throws SQLException si ocurre un error de acceso a la base de datos.
      */
-    List<Salida> listarSalidasPorMinisterio(int idMinisterio) throws SQLException; 
-    
-    
-    double obtenerTotalSalidas() throws SQLException; 
-    
+    List<Salida> listarSalidasPorMinisterio(int idMinisterio) throws SQLException;
+
+    double obtenerTotalSalidas() throws SQLException;
+
 //  método para sumar ofrendas por ministerio
     double obtenerTotalSalidasPorMinisterio(int idMinisterio) throws SQLException;
+
+    
+    
+    
+    List<Salida> listarPorFechas(String inicio, String fin, int idMinisterio) throws SQLException;
+    double obtenerTotalPorFechas(String inicio, String fin, int idMinisterio) throws SQLException;
+
 }

@@ -11,6 +11,7 @@ public interface OfrendaDAO {
 
     /**
      * Inserta una nueva ofrenda.
+     *
      * @param ofrenda Objeto Ofrenda a insertar.
      * @return true si inserta correctamente, false en caso contrario.
      */
@@ -18,9 +19,20 @@ public interface OfrendaDAO {
 
     /**
      * Lista todas las ofrendas registradas.
+     *
      * @return Lista de Ofrenda.
      */
     List<Ofrenda> listarTodos();
-    List<Ofrenda> listarOfrendasPorMinisterio(int idMinisterio) throws SQLException; 
-    double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException; 
+
+    List<Ofrenda> listarOfrendasPorMinisterio(int idMinisterio) throws SQLException;
+
+    double obtenerTotalOfrendasPorMinisterio(int idMinisterio) throws SQLException;
+
+    
+    
+    List<Ofrenda> listarPorFechas(String inicio, String fin, int idMinisterio) throws SQLException;
+
+    double obtenerTotalPorFechas(String inicio, String fin, int idMinisterio) throws SQLException;
+
+
 }

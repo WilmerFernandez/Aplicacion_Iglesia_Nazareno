@@ -29,14 +29,12 @@ public class DiezmoDAOImpl implements DiezmoDAO {
             System.out.println("  Fecha: " + diezmo.getFecha());
             System.out.println("  Monto: " + diezmo.getMonto());
             System.out.println("  ID Registrado Por: " + diezmo.getIdRegistradoPor());
-            
 
             ps.setInt(1, diezmo.getIdFeligres());
             ps.setDate(2, Date.valueOf(diezmo.getFecha()));
             ps.setDouble(3, diezmo.getMonto());
             ps.setInt(4, diezmo.getIdRegistradoPor());
 
-            
             int filasAfectadas = ps.executeUpdate();
             resultado = filasAfectadas > 0;
 
@@ -65,7 +63,7 @@ public class DiezmoDAOImpl implements DiezmoDAO {
                 Diezmo d = new Diezmo();
                 d.setId(rs.getInt("ID_Diezmo"));
                 d.setIdFeligres(rs.getInt("ID_Feligres"));
-                d.setNombreFeligres(rs.getString("Nombre") + " " + rs.getString("Apellido")); 
+                d.setNombreFeligres(rs.getString("Nombre") + " " + rs.getString("Apellido"));
                 d.setFecha(rs.getDate("Fecha").toLocalDate());
                 d.setMonto(rs.getDouble("Monto"));
                 d.setIdRegistradoPor(rs.getInt("Registrado_Por"));
@@ -78,7 +76,6 @@ public class DiezmoDAOImpl implements DiezmoDAO {
         return lista;
     }
 
-    
     @Override
     public double obtenerTotalDiezmos() throws SQLException {
         double total = 0.0;
@@ -90,4 +87,46 @@ public class DiezmoDAOImpl implements DiezmoDAO {
         }
         return total;
     }
+
+    public List<Diezmo> listarPorFechas(String inicio, String fin) {
+        List<Diezmo> lista = new ArrayList<>();
+        String sql = "SELECT d.ID_Diezmo, d.ID_Feligres, f.Nombre, f.Apellido, d.Fecha, d.Monto, d.Registrado_Por "
+                + "FROM diezmo d JOIN feligres f ON d.ID_Feligres = f.ID_Feligres "
+                + "WHERE DATE(d.Fecha) BETWEEN ? AND ?";
+        try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, inicio);
+            ps.setString(2, fin);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Diezmo d = new Diezmo();
+                d.setId(rs.getInt("ID_Diezmo"));
+                d.setIdFeligres(rs.getInt("ID_Feligres"));
+                d.setNombreFeligres(rs.getString("Nombre") + " " + rs.getString("Apellido"));
+                d.setFecha(rs.getDate("Fecha").toLocalDate());
+                d.setMonto(rs.getDouble("Monto"));
+                d.setIdRegistradoPor(rs.getInt("Registrado_Por"));
+                lista.add(d);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    public double obtenerTotalPorFechas(String inicio, String fin) {
+        double total = 0;
+        String sql = "SELECT SUM(Monto) as total FROM diezmo WHERE DATE(Fecha) BETWEEN ? AND ?";
+        try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, inicio);
+            ps.setString(2, fin);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getDouble("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
 }

@@ -25,4 +25,10 @@ public interface DiezmoDAO {
     List<Diezmo> listarTodos();
 
     double obtenerTotalDiezmos() throws SQLException;
+    
+    
+    
+    // Agregado para búsqueda por fechas
+    List<Diezmo> listarPorFechas(String inicio, String fin) throws SQLException;
+    double obtenerTotalPorFechas(String inicio, String fin) throws SQLException;
 }

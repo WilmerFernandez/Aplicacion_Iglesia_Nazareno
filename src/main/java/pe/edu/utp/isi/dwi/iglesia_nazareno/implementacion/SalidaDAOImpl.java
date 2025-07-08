@@ -2,14 +2,14 @@ package pe.edu.utp.isi.dwi.iglesia_nazareno.implementacion;
 
 import pe.edu.utp.isi.dwi.iglesia_nazareno.DAO.SalidaDAO;
 import pe.edu.utp.isi.dwi.iglesia_nazareno.model.Salida;
-import pe.edu.utp.isi.dwi.iglesia_nazareno.DAO.BDConnection; 
+import pe.edu.utp.isi.dwi.iglesia_nazareno.DAO.BDConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp; 
-import java.time.LocalDateTime; 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +18,10 @@ import java.util.List;
  */
 public class SalidaDAOImpl implements SalidaDAO {
 
-    
     private static final String SQL_INSERT = "INSERT INTO Salida (Fecha, Monto, Descripcion, ID_Ministerio, Registrado_Por) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_ALL = "SELECT ID_Salida, Fecha, Monto, Descripcion, ID_Ministerio, Registrado_Por FROM Salida";
     private static final String SQL_SELECT_BY_MINISTERIO = "SELECT ID_Salida, Fecha, Monto, Descripcion, ID_Ministerio, Registrado_Por FROM Salida WHERE ID_Ministerio = ?";
-    private static final String SQL_SUM_ALL = "SELECT SUM(Monto) AS Total FROM Salida"; 
+    private static final String SQL_SUM_ALL = "SELECT SUM(Monto) AS Total FROM Salida";
     private static final String SQL_SUM_BY_MINISTERIO = "SELECT SUM(monto) AS TotalSalidas FROM Salida WHERE ID_Ministerio = ?";
 
     @Override
@@ -30,8 +29,7 @@ public class SalidaDAOImpl implements SalidaDAO {
         boolean resultado = false;
         try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(SQL_INSERT)) {
 
-           
-            LocalDateTime localDateTime = salida.getFecha().atStartOfDay(); 
+            LocalDateTime localDateTime = salida.getFecha().atStartOfDay();
             ps.setTimestamp(1, Timestamp.valueOf(localDateTime));
             ps.setDouble(2, salida.getMonto());
             ps.setString(3, salida.getDescripcion());
@@ -42,7 +40,7 @@ public class SalidaDAOImpl implements SalidaDAO {
 
         } catch (SQLException e) {
             System.err.println("Error insertando salida: " + e.getMessage());
-            throw e; 
+            throw e;
         }
         return resultado;
     }
@@ -75,7 +73,7 @@ public class SalidaDAOImpl implements SalidaDAO {
         }
         return lista;
     }
-    
+
     @Override
     public List<Salida> listarSalidasPorMinisterio(int idMinisterio) throws SQLException {
         List<Salida> lista = new ArrayList<>();
@@ -102,8 +100,6 @@ public class SalidaDAOImpl implements SalidaDAO {
         }
         return lista;
     }
-    
-    
 
     @Override
     public double obtenerTotalSalidas() throws SQLException { // <-- IMPLEMENTACIÓN DEL NUEVO MÉTODO
@@ -118,13 +114,11 @@ public class SalidaDAOImpl implements SalidaDAO {
         }
         return total;
     }
-    
-    
+
     @Override
     public double obtenerTotalSalidasPorMinisterio(int idMinisterio) throws SQLException {
         double total = 0.0;
-        try (Connection con = BDConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(SQL_SUM_BY_MINISTERIO)) {
+        try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(SQL_SUM_BY_MINISTERIO)) {
 
             ps.setInt(1, idMinisterio);
             try (ResultSet rs = ps.executeQuery()) {
@@ -139,7 +133,61 @@ public class SalidaDAOImpl implements SalidaDAO {
         }
         return total;
     }
-    
-    
-}
 
+    public List<Salida> listarPorFechas(String inicio, String fin, int idMinisterio) {
+        List<Salida> lista = new ArrayList<>();
+        String sql = "SELECT * FROM salida WHERE ID_Ministerio = ? AND DATE(Fecha) BETWEEN ? AND ?";
+
+        try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idMinisterio);
+            ps.setString(2, inicio);
+            ps.setString(3, fin);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Salida s = new Salida();
+                s.setIdSalida(rs.getInt("ID_Salida"));
+
+                Timestamp ts = rs.getTimestamp("Fecha");
+                if (ts != null) {
+                    s.setFecha(ts.toLocalDateTime().toLocalDate());
+                }
+
+                s.setMonto(rs.getDouble("Monto"));
+                s.setDescripcion(rs.getString("Descripcion"));
+                s.setIdMinisterio(rs.getInt("ID_Ministerio"));
+                s.setRegistradoPor(rs.getInt("Registrado_Por"));
+                lista.add(s);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error listando salidas por fechas: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+    public double obtenerTotalPorFechas(String inicio, String fin, int idMinisterio) {
+        double total = 0;
+        String sql = "SELECT SUM(Monto) as total FROM salida WHERE ID_Ministerio = ? AND DATE(Fecha) BETWEEN ? AND ?";
+
+        try (Connection con = BDConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idMinisterio);
+            ps.setString(2, inicio);
+            ps.setString(3, fin);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error sumando salidas por fechas: " + e.getMessage());
+        }
+
+        return total;
+    }
+
+}
