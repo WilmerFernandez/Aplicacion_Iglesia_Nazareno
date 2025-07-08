@@ -14,6 +14,11 @@ public class OfrendaService {
     public OfrendaService() {
         this.ofrendaDAO = new OfrendaDAOImpl();
     }
+    
+     // Constructor para pruebas
+    public OfrendaService(OfrendaDAO ofrendaDAO) {
+        this.ofrendaDAO = ofrendaDAO;
+    }
 
     public boolean registrarOfrenda(Ofrenda ofrenda) {
         return ofrendaDAO.insertar(ofrenda);

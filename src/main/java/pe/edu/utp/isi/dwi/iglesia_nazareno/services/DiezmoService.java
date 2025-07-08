@@ -19,6 +19,12 @@ public class DiezmoService {
         // Inicialización de la instancia DAO
         this.diezmoDAO = new DiezmoDAOImpl();
     }
+    
+    // 🔧 Constructor para pruebas con mock
+    public DiezmoService(DiezmoDAO diezmoDAO) {
+        this.diezmoDAO = diezmoDAO;
+    }
+    
 
     /**
      * Registra un nuevo Diezmo.

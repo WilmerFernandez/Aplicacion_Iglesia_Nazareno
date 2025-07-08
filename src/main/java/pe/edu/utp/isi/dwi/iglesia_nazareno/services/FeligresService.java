@@ -13,6 +13,12 @@ public class FeligresService {
     public FeligresService() {
         this.feligresDAO = new FeligresDAOImpl();
     }
+    
+    // Constructor para pruebas (inyección del DAO)
+    public FeligresService(FeligresDAO feligresDAO) {
+        this.feligresDAO = feligresDAO;
+    }
+    
 
     public boolean registrarFeligres(Feligres feligres) {
         return feligresDAO.insertar(feligres);
